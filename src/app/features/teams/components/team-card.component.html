@@ -1,0 +1,25 @@
+<mat-card class="team-card" (click)="openTeam.emit(team())">
+  <mat-card-header>
+    <div mat-card-avatar class="team-avatar">
+      <mat-icon>groups</mat-icon>
+    </div>
+    <mat-card-title>{{ team().name }}</mat-card-title>
+    <mat-card-subtitle>
+      <mat-icon>person</mat-icon>
+      {{ team().members_count }} {{ team().members_count === 1 ? 'member' : 'members' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-actions align="end">
+    <button mat-icon-button 
+            color="primary" 
+            matTooltip="Add Member"
+            (click)="onAddMember($event)">
+      <mat-icon>person_add</mat-icon>
+    </button>
+    <button mat-button color="primary" (click)="onOpen($event)">
+      <mat-icon>arrow_forward</mat-icon>
+      Open
+    </button>
+  </mat-card-actions>
+</mat-card>

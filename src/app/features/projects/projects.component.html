@@ -1,0 +1,53 @@
+<div class="projects-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button mat-icon-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1>
+          <mat-icon>folder</mat-icon>
+          Projects
+        </h1>
+      </div>
+      <button mat-raised-button color="primary" (click)="openCreateProjectDialog()">
+        <mat-icon>add</mat-icon>
+        Create Project
+      </button>
+    </div>
+  </header>
+
+  <main class="projects-content">
+    @if (projectsService.isLoading()) {
+      <div class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading projects...</p>
+      </div>
+    } @else if (projectsService.error()) {
+      <div class="error-container">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ projectsService.error() }}</p>
+        <button mat-button color="primary" (click)="loadProjects()">Try Again</button>
+      </div>
+    } @else if (projectsService.teamProjects().length === 0) {
+      <div class="empty-state">
+        <mat-icon>create_new_folder</mat-icon>
+        <h2>No Projects Yet</h2>
+        <p>Create your first project to start managing tasks!</p>
+        <button mat-raised-button color="primary" (click)="openCreateProjectDialog()">
+          <mat-icon>add</mat-icon>
+          Create Project
+        </button>
+      </div>
+    } @else {
+      <div class="projects-grid">
+        @for (project of projectsService.teamProjects(); track project.id) {
+          <app-project-card 
+            [project]="project"
+            (openProject)="onOpenProject($event)"
+          />
+        }
+      </div>
+    }
+  </main>
+</div>

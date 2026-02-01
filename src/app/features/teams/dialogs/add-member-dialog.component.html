@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>
+  <mat-icon>person_add</mat-icon>
+  Add Member to {{ data.teamName }}
+</h2>
+<mat-dialog-content>
+  <p class="hint">Enter the User ID of the person you want to add to this team.</p>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>User ID</mat-label>
+    <input matInput [(ngModel)]="userId" placeholder="Enter user ID">
+    <mat-icon matSuffix>badge</mat-icon>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" 
+          [disabled]="!userId.trim()"
+          (click)="onAdd()">
+    Add Member
+  </button>
+</mat-dialog-actions>

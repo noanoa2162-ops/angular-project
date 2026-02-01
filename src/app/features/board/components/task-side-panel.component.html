@@ -1,0 +1,122 @@
+<div class="side-panel">
+  <div class="panel-header">
+    <h2>Task Details</h2>
+    <button mat-icon-button (click)="close.emit()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="panel-content">
+    <!-- Task Info -->
+    <div class="task-info">
+      <div class="priority-badge" [class]="'priority-' + task().priority">
+        {{ task().priority | titlecase }} Priority
+      </div>
+      
+      <h3 class="task-title">{{ task().title }}</h3>
+      
+      @if (task().description) {
+        <p class="task-description">{{ task().description }}</p>
+      }
+
+      @if (task().assignee_name) {
+        <div class="info-row">
+          <mat-icon>person</mat-icon>
+          <span>Assigned to: {{ task().assignee_name }}</span>
+        </div>
+      }
+
+      @if (task().due_date) {
+        <div class="info-row">
+          <mat-icon>event</mat-icon>
+          <span>Due: {{ task().due_date | date:'mediumDate' }}</span>
+        </div>
+      }
+
+      <div class="info-row">
+        <mat-icon>schedule</mat-icon>
+        <span>Status: {{ getStatusLabel(task().status) }}</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="task-actions">
+      @if (task().status === 'todo') {
+        <button mat-raised-button color="primary" (click)="startTask()">
+          <mat-icon>play_arrow</mat-icon>
+          Start Task
+        </button>
+      }
+      @if (task().status === 'in-progress') {
+        <button mat-raised-button color="accent" (click)="completeTask()">
+          <mat-icon>check</mat-icon>
+          Mark Done
+        </button>
+      }
+      @if (task().status === 'done') {
+        <button mat-raised-button (click)="reopenTask()">
+          <mat-icon>replay</mat-icon>
+          Reopen Task
+        </button>
+      }
+      <button mat-button color="warn" (click)="deleteTask()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <h4>
+        <mat-icon>comment</mat-icon>
+        Comments
+      </h4>
+
+      @if (commentsService.isLoading() && commentsService.comments().length === 0) {
+        <div class="loading-comments">
+          <mat-spinner diameter="24"></mat-spinner>
+          <span>Loading comments...</span>
+        </div>
+      } @else {
+        <div class="comments-list">
+          @for (comment of commentsService.comments(); track comment.id) {
+            <div class="comment">
+              <div class="comment-header">
+                <span class="comment-author">{{ comment.user_name }}</span>
+                <span class="comment-date">{{ comment.created_at | date:'short' }}</span>
+              </div>
+              <p class="comment-content">{{ comment.content }}</p>
+            </div>
+          } @empty {
+            <p class="no-comments">No comments yet</p>
+          }
+        </div>
+
+        <!-- Add Comment -->
+        <div class="add-comment">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Add a comment</mat-label>
+            <textarea matInput 
+                      [(ngModel)]="newComment" 
+                      placeholder="Write a comment..."
+                      rows="2"></textarea>
+          </mat-form-field>
+          <button mat-raised-button color="primary" 
+                  [disabled]="!newComment.trim() || commentsService.isLoading()"
+                  (click)="addComment()">
+            @if (commentsService.isLoading()) {
+              <mat-spinner diameter="18"></mat-spinner>
+            } @else {
+              <ng-container>
+                <mat-icon>send</mat-icon>
+                Send
+              </ng-container>
+            }
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

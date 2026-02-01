@@ -1,0 +1,55 @@
+<mat-card class="task-card">
+  <mat-card-content>
+    <div class="task-header">
+      <span class="priority-badge" [class]="'priority-' + task().priority">
+        {{ task().priority | titlecase }}
+      </span>
+      <button mat-icon-button [matMenuTriggerFor]="statusMenu" 
+              (click)="$event.stopPropagation()"
+              matTooltip="Change status">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #statusMenu="matMenu">
+        @if (task().status !== 'todo') {
+          <button mat-menu-item (click)="onStatusChange('todo')">
+            <mat-icon>radio_button_unchecked</mat-icon>
+            <span>Move to Todo</span>
+          </button>
+        }
+        @if (task().status !== 'in-progress') {
+          <button mat-menu-item (click)="onStatusChange('in-progress')">
+            <mat-icon>pending</mat-icon>
+            <span>Start Task</span>
+          </button>
+        }
+        @if (task().status !== 'done') {
+          <button mat-menu-item (click)="onStatusChange('done')">
+            <mat-icon>check_circle</mat-icon>
+            <span>Mark Done</span>
+          </button>
+        }
+      </mat-menu>
+    </div>
+    
+    <h4 class="task-title">{{ task().title }}</h4>
+    
+    @if (task().description) {
+      <p class="task-description">{{ task().description }}</p>
+    }
+    
+    <div class="task-footer">
+      @if (task().assignee_name) {
+        <div class="assignee" matTooltip="Assigned to {{ task().assignee_name }}">
+          <mat-icon>person</mat-icon>
+          <span>{{ task().assignee_name }}</span>
+        </div>
+      }
+      @if (task().due_date) {
+        <div class="due-date" [class.overdue]="isOverdue()">
+          <mat-icon>event</mat-icon>
+          <span>{{ task().due_date | date:'MMM d' }}</span>
+        </div>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

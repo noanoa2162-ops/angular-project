@@ -1,0 +1,19 @@
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.hint {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+mat-dialog-content {
+  padding-top: 10px;
+}

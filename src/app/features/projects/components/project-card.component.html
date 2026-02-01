@@ -1,0 +1,19 @@
+<mat-card class="project-card" (click)="openProject.emit(project())">
+  <mat-card-header>
+    <div mat-card-avatar class="project-avatar">
+      <mat-icon>folder_open</mat-icon>
+    </div>
+    <mat-card-title>{{ project().name }}</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <p class="description">{{ project().description || 'No description' }}</p>
+  </mat-card-content>
+  
+  <mat-card-actions align="end">
+    <button mat-button color="primary" (click)="onOpen($event)">
+      <mat-icon>dashboard</mat-icon>
+      Open Board
+    </button>
+  </mat-card-actions>
+</mat-card>

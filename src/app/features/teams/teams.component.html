@@ -1,0 +1,49 @@
+<div class="teams-container">
+  <header class="page-header">
+    <div class="header-content">
+      <h1>
+        <mat-icon>groups</mat-icon>
+        My Teams
+      </h1>
+      <button mat-raised-button color="primary" (click)="openCreateTeamDialog()">
+        <mat-icon>add</mat-icon>
+        Create Team
+      </button>
+    </div>
+  </header>
+
+  <main class="teams-content">
+    @if (teamsService.isLoading()) {
+      <div class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading teams...</p>
+      </div>
+    } @else if (teamsService.error()) {
+      <div class="error-container">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ teamsService.error() }}</p>
+        <button mat-button color="primary" (click)="loadTeams()">Try Again</button>
+      </div>
+    } @else if (teamsService.teams().length === 0) {
+      <div class="empty-state">
+        <mat-icon>group_add</mat-icon>
+        <h2>No Teams Yet</h2>
+        <p>Create your first team to get started!</p>
+        <button mat-raised-button color="primary" (click)="openCreateTeamDialog()">
+          <mat-icon>add</mat-icon>
+          Create Team
+        </button>
+      </div>
+    } @else {
+      <div class="teams-grid">
+        @for (team of teamsService.teams(); track team.id) {
+          <app-team-card 
+            [team]="team"
+            (openTeam)="onOpenTeam($event)"
+            (addMember)="openAddMemberDialog($event)"
+          />
+        }
+      </div>
+    }
+  </main>
+</div>

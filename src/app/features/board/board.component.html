@@ -1,0 +1,70 @@
+<div class="board-container" [class.panel-open]="tasksService.selectedTask()">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button mat-icon-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1>
+          <mat-icon>dashboard</mat-icon>
+          {{ projectName() }}
+        </h1>
+      </div>
+      <button mat-raised-button color="primary" (click)="openCreateTaskDialog()">
+        <mat-icon>add</mat-icon>
+        Add Task
+      </button>
+    </div>
+  </header>
+
+  <main class="board-content">
+    @if (tasksService.isLoading() && !hasLoadedOnce()) {
+      <div class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading tasks...</p>
+      </div>
+    } @else if (tasksService.error()) {
+      <div class="error-container">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ tasksService.error() }}</p>
+        <button mat-button color="primary" (click)="loadTasks()">Try Again</button>
+      </div>
+    } @else {
+      <div class="board-columns">
+        <app-board-column
+          title="To Do"
+          status="todo"
+          [tasks]="tasksService.todoTasks()"
+          (taskClick)="onTaskClick($event)"
+          (statusChange)="onStatusChange($event)"
+        />
+        <app-board-column
+          title="In Progress"
+          status="in-progress"
+          [tasks]="tasksService.inProgressTasks()"
+          (taskClick)="onTaskClick($event)"
+          (statusChange)="onStatusChange($event)"
+        />
+        <app-board-column
+          title="Done"
+          status="done"
+          [tasks]="tasksService.doneTasks()"
+          (taskClick)="onTaskClick($event)"
+          (statusChange)="onStatusChange($event)"
+        />
+      </div>
+    }
+  </main>
+
+  <!-- Side Panel -->
+  @if (tasksService.selectedTask()) {
+    <div class="side-panel-backdrop" (click)="closePanel()"></div>
+    <app-task-side-panel
+      [task]="tasksService.selectedTask()!"
+      [projectId]="projectId()"
+      (close)="closePanel()"
+      (taskUpdated)="onTaskUpdated()"
+      (taskDeleted)="onTaskDeleted()"
+    />
+  }
+</div>

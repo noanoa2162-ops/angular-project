@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Create New Project</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Project Name</mat-label>
+    <input matInput [(ngModel)]="projectName" placeholder="Enter project name">
+  </mat-form-field>
+  
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="description" 
+              placeholder="Enter project description"
+              rows="3"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" 
+          [disabled]="!projectName.trim()"
+          (click)="onCreate()">
+    Create
+  </button>
+</mat-dialog-actions>
