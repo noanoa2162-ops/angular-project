@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: angular-project
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist/angular_project/browser
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
