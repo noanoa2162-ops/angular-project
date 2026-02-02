@@ -1,90 +1,193 @@
-.task-card {
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+// Task Card - Premium Design
+$bg-white: #ffffff;
+$bg-hover: #f8fafc;
+$primary: #7c3aed;
+$success: #10b981;
+$warning: #f59e0b;
+$error: #ef4444;
+$text-primary: #0f172a;
+$text-secondary: #475569;
+$text-muted: #94a3b8;
+$border: #e2e8f0;
 
+.task-card {
+  background: $bg-white;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    border-radius: 2px;
+    background: $border;
+    transition: background 0.2s ease;
+  }
+  
+  &.high::before { background: $error; }
+  &.medium::before { background: $warning; }
+  &.low::before { background: $success; }
+  
   &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: transparent;
   }
 }
 
-mat-card-content {
-  padding: 12px !important;
-}
-
-.task-header {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
   text-transform: uppercase;
+  letter-spacing: 0.3px;
+  
+  &.high {
+    background: rgba($error, 0.1);
+    color: $error;
+  }
+  
+  &.medium {
+    background: rgba($warning, 0.1);
+    color: #d97706;
+  }
+  
+  &.low {
+    background: rgba($success, 0.1);
+    color: $success;
+  }
 }
 
-.priority-low {
-  background: #e3f2fd;
-  color: #1976d2;
-}
-
-.priority-medium {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.priority-high {
-  background: #ffebee;
-  color: #d32f2f;
+.card-menu {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    color: $text-muted;
+  }
+  
+  &:hover {
+    background: $bg-hover;
+  }
+  
+  .task-card:hover & {
+    opacity: 1;
+  }
 }
 
 .task-title {
-  margin: 0 0 8px 0;
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 8px 0;
   line-height: 1.4;
+  padding-left: 12px;
 }
 
 .task-description {
-  margin: 0 0 12px 0;
   font-size: 13px;
-  color: #666;
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: $text-secondary;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  padding-left: 12px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.task-footer {
+.card-footer {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  padding-left: 12px;
 }
 
-.assignee,
-.due-date {
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meta-item {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #666;
-
-  mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+  color: $text-muted;
+  
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  &.overdue {
+    color: $error;
+  }
+  
+  &.due-soon {
+    color: $warning;
   }
 }
 
-.due-date.overdue {
-  color: #d32f2f;
+.assignee-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  
+  &.has-assignee {
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    
+    .avatar-initials {
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+    }
+  }
+  
+  &.unassigned {
+    background: #f1f5f9;
+    border: 1px dashed #cbd5e1;
+    
+    svg {
+      width: 14px;
+      height: 14px;
+      color: $text-muted;
+    }
+  }
 }

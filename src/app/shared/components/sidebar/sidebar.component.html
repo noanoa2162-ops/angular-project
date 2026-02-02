@@ -1,0 +1,102 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed()">
+  <!-- Logo Section -->
+  <div class="sidebar-header">
+    <div class="logo" [routerLink]="['/teams']">
+      @if (!isCollapsed()) {
+        <span class="lumina-logo">
+          <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+        </span>
+      }
+    </div>
+    <button class="collapse-btn" (click)="toggleSidebar()" [matTooltip]="isCollapsed() ? 'Expand' : 'Collapse'">
+      <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <button class="action-btn primary" matRipple [matTooltip]="isCollapsed() ? 'New Task' : ''">
+      <mat-icon>add</mat-icon>
+      @if (!isCollapsed()) {
+        <span>New Task</span>
+      }
+    </button>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      @if (!isCollapsed()) {
+        <span class="section-title">MENU</span>
+      }
+      
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active" matRipple
+         [matTooltip]="isCollapsed() ? 'Dashboard' : ''">
+        <mat-icon>space_dashboard</mat-icon>
+        @if (!isCollapsed()) {
+          <span>Dashboard</span>
+        }
+      </a>
+      
+      <a class="nav-item" routerLink="/teams" routerLinkActive="active" matRipple
+         [matTooltip]="isCollapsed() ? 'Teams' : ''">
+        <mat-icon>groups</mat-icon>
+        @if (!isCollapsed()) {
+          <span>Teams</span>
+          <span class="badge">{{ teamsService.teams().length }}</span>
+        }
+      </a>
+
+      <a class="nav-item" routerLink="/my-tasks" routerLinkActive="active" matRipple
+         [matTooltip]="isCollapsed() ? 'My Tasks' : ''">
+        <mat-icon>task_alt</mat-icon>
+        @if (!isCollapsed()) {
+          <span>My Tasks</span>
+        }
+      </a>
+
+      <a class="nav-item" routerLink="/inbox" routerLinkActive="active" matRipple
+         [matTooltip]="isCollapsed() ? 'Inbox' : ''">
+        <mat-icon>inbox</mat-icon>
+        @if (!isCollapsed()) {
+          <span>Inbox</span>
+          <span class="badge notification">3</span>
+        }
+      </a>
+    </div>
+
+    <div class="nav-section">
+      @if (!isCollapsed()) {
+        <span class="section-title">FAVORITES</span>
+      }
+      
+      @for (team of teamsService.teams().slice(0, 3); track team.id) {
+        <a class="nav-item" [routerLink]="['/teams', team.id, 'projects']" matRipple
+           [matTooltip]="isCollapsed() ? team.name : ''">
+          <div class="team-dot" [style.background]="getTeamColor(team.id)"></div>
+          @if (!isCollapsed()) {
+            <span>{{ team.name }}</span>
+          }
+        </a>
+      }
+    </div>
+  </nav>
+
+  <!-- User Section -->
+  <div class="sidebar-footer">
+    <div class="user-section" matRipple>
+      <div class="user-avatar">
+        {{ userInitials() }}
+      </div>
+      @if (!isCollapsed()) {
+        <div class="user-info">
+          <span class="user-name">{{ currentUser()?.name }}</span>
+          <span class="user-email">{{ currentUser()?.email }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()" matTooltip="Logout">
+          <mat-icon>logout</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+</aside>

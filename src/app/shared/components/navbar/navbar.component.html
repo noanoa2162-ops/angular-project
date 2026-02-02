@@ -1,0 +1,96 @@
+<mat-toolbar class="navbar">
+  <div class="navbar-content">
+    <div class="navbar-left">
+      <a routerLink="/dashboard" class="logo">
+        <span class="lumina-logo">
+          <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+        </span>
+      </a>
+      
+      <nav class="nav-links">
+        <a mat-button routerLink="/dashboard" routerLinkActive="active">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </a>
+        <a mat-button routerLink="/teams" routerLinkActive="active">
+          <mat-icon>groups</mat-icon>
+          Teams
+        </a>
+      </nav>
+    </div>
+
+    <div class="navbar-right">
+      <!-- Notifications -->
+      <button mat-icon-button [matMenuTriggerFor]="notifMenu" class="notif-btn" matTooltip="Notifications">
+        <mat-icon>notifications_none</mat-icon>
+        @if (unreadCount() > 0) {
+          <span class="notif-badge">{{ unreadCount() }}</span>
+        }
+      </button>
+      
+      <mat-menu #notifMenu="matMenu" xPosition="before" class="notifications-menu">
+        <div class="notif-header" (click)="$event.stopPropagation()">
+          <h3>Notifications</h3>
+          @if (unreadCount() > 0) {
+            <button class="mark-read-btn" (click)="markAllRead()">Mark all read</button>
+          }
+        </div>
+        <mat-divider></mat-divider>
+        @if (notifications().length === 0) {
+          <div class="notif-empty">
+            <mat-icon>notifications_off</mat-icon>
+            <p>No notifications yet</p>
+          </div>
+        } @else {
+          @for (notif of notifications(); track notif.id) {
+            <button mat-menu-item class="notif-item" [class.unread]="!notif.read">
+              <div class="notif-icon" [class]="notif.type">
+                <mat-icon>{{ getNotifIcon(notif.type) }}</mat-icon>
+              </div>
+              <div class="notif-content">
+                <span class="notif-text">{{ notif.message }}</span>
+                <span class="notif-time">{{ notif.time }}</span>
+              </div>
+            </button>
+          }
+        }
+      </mat-menu>
+      
+      <button mat-icon-button matTooltip="Settings" routerLink="/settings">
+        <mat-icon>settings</mat-icon>
+      </button>
+
+      <div class="user-menu">
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+          <div class="avatar">{{ userInitials() }}</div>
+          <span class="user-name">{{ authService.currentUser()?.name || 'User' }}</span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        
+        <mat-menu #userMenu="matMenu" xPosition="before">
+          <div class="menu-header">
+            <div class="menu-avatar">{{ userInitials() }}</div>
+            <div class="menu-user-info">
+              <span class="menu-user-name">{{ authService.currentUser()?.name }}</span>
+              <span class="menu-user-email">{{ authService.currentUser()?.email }}</span>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <button mat-menu-item routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button mat-menu-item routerLink="/settings">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

@@ -5,6 +5,7 @@ import { Observable, tap, catchError, throwError } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models';
 
 const TOKEN_KEY = 'auth_token';
+const API_URL = 'https://tasks-teacher-server.onrender.com/api';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +13,17 @@ const TOKEN_KEY = 'auth_token';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private apiUrl = `${API_URL}/auth`;
   
-  private readonly apiUrl = '/api/auth';
-  
-  // Signals for reactive state
   private _currentUser = signal<User | null>(null);
   private _isLoading = signal(false);
   private _error = signal<string | null>(null);
+  private _token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
 
-  // Public computed signals
   readonly currentUser = this._currentUser.asReadonly();
   readonly isLoading = this._isLoading.asReadonly();
   readonly error = this._error.asReadonly();
-  readonly isAuthenticated = computed(() => !!this.getToken());
-
-  constructor() {
-    this.loadUserFromToken();
-  }
+  readonly isAuthenticated = computed(() => !!this._token());
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     this._isLoading.set(true);
@@ -66,26 +61,32 @@ export class AuthService {
     );
   }
 
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`).pipe(
+      tap(user => {
+        this._currentUser.set(user);
+      }),
+      catchError(error => {
+        this.logout();
+        return throwError(() => error);
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
+    this._token.set(null);
     this._currentUser.set(null);
     this.router.navigate(['/auth']);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return this._token();
   }
 
   private setToken(token: string): void {
     localStorage.setItem(TOKEN_KEY, token);
-  }
-
-  private loadUserFromToken(): void {
-    const token = this.getToken();
-    if (token) {
-      // Token exists, user is considered authenticated
-      // User details will be loaded from API if needed
-    }
+    this._token.set(token);
   }
 
   clearError(): void {

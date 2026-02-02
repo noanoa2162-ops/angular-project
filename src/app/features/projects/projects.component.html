@@ -1,53 +1,178 @@
-<div class="projects-container">
-  <header class="page-header">
+<div class="projects-page">
+  <!-- Page Header -->
+  <div class="page-header">
     <div class="header-content">
-      <div class="header-left">
-        <button mat-icon-button (click)="goBack()">
-          <mat-icon>arrow_back</mat-icon>
+      <div class="title-section">
+        <button class="btn-back" (click)="goBack()">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
-        <h1>
-          <mat-icon>folder</mat-icon>
-          Projects
-        </h1>
+        <div class="title-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <h1>{{ teamName() }}</h1>
+          <p class="subtitle">{{ projectsService.teamProjects().length }} projects in this workspace</p>
+        </div>
       </div>
-      <button mat-raised-button color="primary" (click)="openCreateProjectDialog()">
-        <mat-icon>add</mat-icon>
-        Create Project
+      <div class="header-actions">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search projects...">
+        </div>
+        <button class="btn-create" (click)="openCreateProjectDialog()">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          New Project
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-icon projects">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ projectsService.teamProjects().length }}</span>
+        <span class="stat-label">Total Projects</span>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon tasks">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">--</span>
+        <span class="stat-label">Total Tasks</span>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon progress">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">Active</span>
+        <span class="stat-label">Status</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (projectsService.isLoading() && !hasLoadedOnce()) {
+    <div class="loading-state">
+      <div class="loader"></div>
+      <p>Loading projects...</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!projectsService.isLoading() && projectsService.teamProjects().length === 0 && hasLoadedOnce()) {
+    <div class="empty-state">
+      <div class="empty-illustration">
+        <svg viewBox="0 0 200 200" fill="none">
+          <rect x="30" y="40" width="140" height="120" rx="12" fill="#f3f4f6"/>
+          <rect x="45" y="60" width="80" height="12" rx="4" fill="#e5e7eb"/>
+          <rect x="45" y="80" width="110" height="8" rx="3" fill="#e5e7eb"/>
+          <rect x="45" y="95" width="90" height="8" rx="3" fill="#e5e7eb"/>
+          <rect x="45" y="120" width="60" height="24" rx="6" fill="#d1d5db"/>
+        </svg>
+      </div>
+      <h3>No projects yet</h3>
+      <p>Create your first project to start organizing your tasks and workflows</p>
+      <button class="btn-create large" (click)="openCreateProjectDialog()">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Create Your First Project
       </button>
     </div>
-  </header>
+  }
 
-  <main class="projects-content">
-    @if (projectsService.isLoading()) {
-      <div class="loading-container">
-        <mat-spinner></mat-spinner>
-        <p>Loading projects...</p>
-      </div>
-    } @else if (projectsService.error()) {
-      <div class="error-container">
-        <mat-icon>error_outline</mat-icon>
-        <p>{{ projectsService.error() }}</p>
-        <button mat-button color="primary" (click)="loadProjects()">Try Again</button>
-      </div>
-    } @else if (projectsService.teamProjects().length === 0) {
-      <div class="empty-state">
-        <mat-icon>create_new_folder</mat-icon>
-        <h2>No Projects Yet</h2>
-        <p>Create your first project to start managing tasks!</p>
-        <button mat-raised-button color="primary" (click)="openCreateProjectDialog()">
-          <mat-icon>add</mat-icon>
-          Create Project
-        </button>
-      </div>
-    } @else {
-      <div class="projects-grid">
-        @for (project of projectsService.teamProjects(); track project.id) {
-          <app-project-card 
-            [project]="project"
-            (openProject)="onOpenProject($event)"
-          />
-        }
-      </div>
-    }
-  </main>
+  <!-- Projects Grid -->
+  @if (projectsService.teamProjects().length > 0) {
+    <div class="projects-grid">
+      @for (project of projectsService.teamProjects(); track project.id) {
+        <div class="project-card" (click)="openProject(project)">
+          <!-- Card Header with Gradient -->
+          <div class="card-header" [style.background]="getProjectGradient(project)">
+            <div class="project-avatar">
+              {{ getProjectInitial(project.name) }}
+            </div>
+            <button class="menu-btn" (click)="$event.stopPropagation()">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                <circle cx="12" cy="19" r="1" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Card Body -->
+          <div class="card-body">
+            <h3 class="project-name">{{ project.name }}</h3>
+            @if (project.description) {
+              <p class="project-description">{{ project.description }}</p>
+            } @else {
+              <p class="project-description placeholder">No description added</p>
+            }
+            
+            <!-- Project Info -->
+            <div class="project-info">
+              <div class="info-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                  <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                  <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Board View</span>
+              </div>
+              <div class="info-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <div class="footer-content">
+              <span class="progress-text">In Progress</span>
+              <button class="action-btn primary">
+                <span>Open Board</span>
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>
+

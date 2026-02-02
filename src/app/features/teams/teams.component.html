@@ -1,49 +1,214 @@
-<div class="teams-container">
-  <header class="page-header">
+<div class="teams-page">
+  <!-- Page Header -->
+  <div class="page-header">
     <div class="header-content">
-      <h1>
-        <mat-icon>groups</mat-icon>
-        My Teams
-      </h1>
-      <button mat-raised-button color="primary" (click)="openCreateTeamDialog()">
-        <mat-icon>add</mat-icon>
-        Create Team
-      </button>
-    </div>
-  </header>
-
-  <main class="teams-content">
-    @if (teamsService.isLoading()) {
-      <div class="loading-container">
-        <mat-spinner></mat-spinner>
-        <p>Loading teams...</p>
+      <div class="title-section">
+        <div class="title-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <h1>My Teams</h1>
+          <p class="subtitle">Manage and collaborate with your teams</p>
+        </div>
       </div>
-    } @else if (teamsService.error()) {
-      <div class="error-container">
-        <mat-icon>error_outline</mat-icon>
-        <p>{{ teamsService.error() }}</p>
-        <button mat-button color="primary" (click)="loadTeams()">Try Again</button>
-      </div>
-    } @else if (teamsService.teams().length === 0) {
-      <div class="empty-state">
-        <mat-icon>group_add</mat-icon>
-        <h2>No Teams Yet</h2>
-        <p>Create your first team to get started!</p>
-        <button mat-raised-button color="primary" (click)="openCreateTeamDialog()">
-          <mat-icon>add</mat-icon>
+      <div class="header-actions">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search teams..." 
+                 [ngModel]="searchQuery()" 
+                 (ngModelChange)="onSearchChange($event)">
+          @if (searchQuery()) {
+            <button class="clear-btn" (click)="clearSearch()">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          }
+        </div>
+        <button class="btn-create" (click)="openCreateTeamDialog()">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
           Create Team
         </button>
       </div>
-    } @else {
-      <div class="teams-grid">
-        @for (team of teamsService.teams(); track team.id) {
-          <app-team-card 
-            [team]="team"
-            (openTeam)="onOpenTeam($event)"
-            (addMember)="openAddMemberDialog($event)"
-          />
-        }
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-icon teams">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+          <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+        </svg>
       </div>
-    }
-  </main>
+      <div class="stat-info">
+        <span class="stat-value">{{ teamsService.teams().length }}</span>
+        <span class="stat-label">Total Teams</span>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon members">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+          <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ filteredTeams().length }}</span>
+        <span class="stat-label">Teams Shown</span>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon active">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2"/>
+          <path d="M22 4 12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ teamsService.teams().length }}</span>
+        <span class="stat-label">Active Teams</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (teamsService.isLoading() && !hasLoadedOnce()) {
+    <div class="loading-state">
+      <div class="loader"></div>
+      <p>Loading your teams...</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!teamsService.isLoading() && teamsService.teams().length === 0 && hasLoadedOnce()) {
+    <div class="empty-state">
+      <div class="empty-illustration">
+        <svg viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="80" fill="#f3f4f6"/>
+          <circle cx="70" cy="85" r="25" fill="#e5e7eb"/>
+          <circle cx="130" cy="85" r="25" fill="#e5e7eb"/>
+          <path d="M60 130c0-22.1 17.9-40 40-40s40 17.9 40 40" stroke="#d1d5db" stroke-width="8"/>
+        </svg>
+      </div>
+      <h3>No teams yet</h3>
+      <p>Create your first team to start collaborating with others</p>
+      <button class="btn-create large" (click)="openCreateTeamDialog()">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Create Your First Team
+      </button>
+    </div>
+  }
+
+  <!-- No Search Results -->
+  @if (!teamsService.isLoading() && teamsService.teams().length > 0 && filteredTeams().length === 0 && hasLoadedOnce()) {
+    <div class="empty-state">
+      <div class="empty-illustration">
+        <svg viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="80" fill="#f3f4f6"/>
+          <circle cx="100" cy="90" r="35" stroke="#d1d5db" stroke-width="8" fill="none"/>
+          <path d="M125 115l30 30" stroke="#d1d5db" stroke-width="8" stroke-linecap="round"/>
+          <path d="M85 90h30M100 75v30" stroke="#e5e7eb" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>No teams found</h3>
+      <p>No teams match your search for "{{ searchQuery() }}"</p>
+      <button class="btn-secondary" (click)="clearSearch()">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Clear Search
+      </button>
+    </div>
+  }
+
+  <!-- Teams Grid -->
+  @if (filteredTeams().length > 0) {
+    <div class="teams-grid">
+      @for (team of filteredTeams(); track team.id) {
+        <div class="team-card" (click)="goToProjects(team)">
+          <!-- Card Header with Gradient -->
+          <div class="card-header" [style.background]="getTeamGradient(team)">
+            <div class="team-avatar">
+              {{ getTeamInitial(team.name) }}
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">{{ team.name }}</h3>
+              <p class="team-description">Team workspace</p>
+            </div>
+            <button class="menu-btn" (click)="$event.stopPropagation()">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                <circle cx="12" cy="19" r="1" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Card Body -->
+          <div class="card-body">
+            <!-- Team Stats -->
+            <div class="team-stats">
+              <div class="stat">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>{{ team.members_count || 0 }} members</span>
+              </div>
+              <div class="stat">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Projects</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <div class="member-avatars">
+              @for (i of [1, 2, 3]; track i) {
+                <div class="mini-avatar" [style.background]="getMemberGradient(i)">
+                  {{ getMemberInitial(i) }}
+                </div>
+              }
+              @if ((team.members_count || 0) > 3) {
+                <div class="mini-avatar more">+{{ (team.members_count || 0) - 3 }}</div>
+              }
+            </div>
+            <div class="card-actions">
+              <button class="action-btn" (click)="openAddMemberDialog(team, $event)" matTooltip="Add member">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                  <path d="M19 8v6M22 11h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <button class="action-btn primary">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>
+

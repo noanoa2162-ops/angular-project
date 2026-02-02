@@ -1,70 +1,268 @@
-<div class="board-container" [class.panel-open]="tasksService.selectedTask()">
-  <header class="page-header">
-    <div class="header-content">
-      <div class="header-left">
-        <button mat-icon-button (click)="goBack()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <h1>
-          <mat-icon>dashboard</mat-icon>
-          {{ projectName() }}
-        </h1>
+<div class="board-page" [class.panel-open]="tasksService.selectedTask()">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <button class="btn-back" routerLink="/teams">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="project-info">
+        <h1>{{ projectName() }}</h1>
+        <div class="project-meta">
+          <span class="badge">{{ viewMode() === 'board' ? 'Board View' : 'List View' }}</span>
+          <span class="task-count">{{ getTotalTasks() }} tasks</span>
+        </div>
       </div>
-      <button mat-raised-button color="primary" (click)="openCreateTaskDialog()">
-        <mat-icon>add</mat-icon>
+    </div>
+    <div class="header-actions">
+      <div class="view-switcher">
+        <button class="view-btn" [class.active]="viewMode() === 'board'" (click)="viewMode.set('board')">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </button>
+        <button class="view-btn" [class.active]="viewMode() === 'list'" (click)="viewMode.set('list')">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <button class="btn-create" (click)="openCreateTaskDialog()">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
         Add Task
       </button>
     </div>
-  </header>
+  </div>
 
-  <main class="board-content">
-    @if (tasksService.isLoading() && !hasLoadedOnce()) {
-      <div class="loading-container">
-        <mat-spinner></mat-spinner>
-        <p>Loading tasks...</p>
+  <!-- Loading State -->
+  @if (tasksService.isLoading() && !hasLoadedOnce()) {
+    <div class="loading-state">
+      <div class="loader"></div>
+      <p>Loading tasks...</p>
+    </div>
+  }
+
+  <!-- Board View -->
+  @if (hasLoadedOnce() && viewMode() === 'board') {
+    <div class="board-container">
+      <!-- To Do Column -->
+      <div class="board-column todo">
+        <div class="column-header">
+          <div class="column-title">
+            <div class="status-dot todo"></div>
+            <h3>To Do</h3>
+            <span class="count">{{ filteredTodoTasks().length }}</span>
+          </div>
+          <button class="column-menu">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="5" r="1" fill="currentColor"/>
+              <circle cx="12" cy="12" r="1" fill="currentColor"/>
+              <circle cx="12" cy="19" r="1" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+        <div class="column-content"
+             cdkDropList
+             id="todo-column"
+             [cdkDropListData]="filteredTodoTasks()"
+             [cdkDropListConnectedTo]="columnIds"
+             (cdkDropListDropped)="onDrop($event, 'todo')">
+          @for (task of filteredTodoTasks(); track task.id) {
+            <app-task-card 
+              [task]="task" 
+              cdkDrag
+              (click)="onTaskClick(task)"
+              (statusChange)="onStatusChange({task: task, newStatus: $event})">
+            </app-task-card>
+          }
+          @if (filteredTodoTasks().length === 0) {
+            <div class="empty-column">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M9 12h6M12 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <p>No tasks yet</p>
+            </div>
+          }
+        </div>
+        <button class="btn-add-task" (click)="openCreateTaskDialog()">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Add task
+        </button>
       </div>
-    } @else if (tasksService.error()) {
-      <div class="error-container">
-        <mat-icon>error_outline</mat-icon>
-        <p>{{ tasksService.error() }}</p>
-        <button mat-button color="primary" (click)="loadTasks()">Try Again</button>
+
+      <!-- In Progress Column -->
+      <div class="board-column in-progress">
+        <div class="column-header">
+          <div class="column-title">
+            <div class="status-dot in-progress"></div>
+            <h3>In Progress</h3>
+            <span class="count">{{ filteredInProgressTasks().length }}</span>
+          </div>
+          <button class="column-menu">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="5" r="1" fill="currentColor"/>
+              <circle cx="12" cy="12" r="1" fill="currentColor"/>
+              <circle cx="12" cy="19" r="1" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+        <div class="column-content"
+             cdkDropList
+             id="in-progress-column"
+             [cdkDropListData]="filteredInProgressTasks()"
+             [cdkDropListConnectedTo]="columnIds"
+             (cdkDropListDropped)="onDrop($event, 'in_progress')">
+          @for (task of filteredInProgressTasks(); track task.id) {
+            <app-task-card 
+              [task]="task" 
+              cdkDrag
+              (click)="onTaskClick(task)"
+              (statusChange)="onStatusChange({task: task, newStatus: $event})">
+            </app-task-card>
+          }
+          @if (filteredInProgressTasks().length === 0) {
+            <div class="empty-column">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <p>No tasks in progress</p>
+            </div>
+          }
+        </div>
       </div>
-    } @else {
-      <div class="board-columns">
-        <app-board-column
-          title="To Do"
-          status="todo"
-          [tasks]="tasksService.todoTasks()"
-          (taskClick)="onTaskClick($event)"
-          (statusChange)="onStatusChange($event)"
-        />
-        <app-board-column
-          title="In Progress"
-          status="in-progress"
-          [tasks]="tasksService.inProgressTasks()"
-          (taskClick)="onTaskClick($event)"
-          (statusChange)="onStatusChange($event)"
-        />
-        <app-board-column
-          title="Done"
-          status="done"
-          [tasks]="tasksService.doneTasks()"
-          (taskClick)="onTaskClick($event)"
-          (statusChange)="onStatusChange($event)"
-        />
+
+      <!-- Done Column -->
+      <div class="board-column done">
+        <div class="column-header">
+          <div class="column-title">
+            <div class="status-dot done"></div>
+            <h3>Done</h3>
+            <span class="count">{{ filteredDoneTasks().length }}</span>
+          </div>
+          <button class="column-menu">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="5" r="1" fill="currentColor"/>
+              <circle cx="12" cy="12" r="1" fill="currentColor"/>
+              <circle cx="12" cy="19" r="1" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+        <div class="column-content"
+             cdkDropList
+             id="done-column"
+             [cdkDropListData]="filteredDoneTasks()"
+             [cdkDropListConnectedTo]="columnIds"
+             (cdkDropListDropped)="onDrop($event, 'done')">
+          @for (task of filteredDoneTasks(); track task.id) {
+            <app-task-card 
+              [task]="task" 
+              cdkDrag
+              (click)="onTaskClick(task)"
+              (statusChange)="onStatusChange({task: task, newStatus: $event})">
+            </app-task-card>
+          }
+          @if (filteredDoneTasks().length === 0) {
+            <div class="empty-column">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2"/>
+                <path d="M22 4 12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p>No completed tasks</p>
+            </div>
+          }
+        </div>
       </div>
-    }
-  </main>
+    </div>
+  }
+
+  <!-- List View -->
+  @if (hasLoadedOnce() && viewMode() === 'list') {
+    <div class="list-container">
+      <div class="list-header">
+        <div class="list-col task-col">Task</div>
+        <div class="list-col status-col">Status</div>
+        <div class="list-col priority-col">Priority</div>
+        <div class="list-col date-col">Due Date</div>
+        <div class="list-col actions-col"></div>
+      </div>
+      
+      @if (allFilteredTasks().length === 0) {
+        <div class="list-empty">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 12h6M12 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <p>No tasks found</p>
+          <button class="btn-create-inline" (click)="openCreateTaskDialog()">
+            Create your first task
+          </button>
+        </div>
+      } @else {
+        @for (task of allFilteredTasks(); track task.id) {
+          <div class="list-row" (click)="onTaskClick(task)">
+            <div class="list-col task-col">
+              <div class="task-checkbox" [class]="task.status" (click)="toggleTaskStatus(task, $event)">
+                @if (task.status === 'done') {
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                }
+              </div>
+              <div class="task-details">
+                <span class="task-title" [class.completed]="task.status === 'done'">{{ task.title }}</span>
+                @if (task.description) {
+                  <span class="task-desc">{{ task.description }}</span>
+                }
+              </div>
+            </div>
+            <div class="list-col status-col">
+              <span class="status-badge" [class]="task.status">
+                {{ getStatusLabel(task.status) }}
+              </span>
+            </div>
+            <div class="list-col priority-col">
+              <span class="priority-badge" [class]="task.priority">
+                {{ task.priority }}
+              </span>
+            </div>
+            <div class="list-col date-col">
+              @if (task.due_date) {
+                <span class="due-date">{{ formatDate(task.due_date) }}</span>
+              } @else {
+                <span class="no-date">-</span>
+              }
+            </div>
+            <div class="list-col actions-col">
+              <button class="row-action" (click)="onTaskClick(task); $event.stopPropagation()">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  }
 
   <!-- Side Panel -->
   @if (tasksService.selectedTask()) {
-    <div class="side-panel-backdrop" (click)="closePanel()"></div>
     <app-task-side-panel
       [task]="tasksService.selectedTask()!"
       [projectId]="projectId()"
       (close)="closePanel()"
       (taskUpdated)="onTaskUpdated()"
-      (taskDeleted)="onTaskDeleted()"
-    />
+      (taskDeleted)="onTaskDeleted()">
+    </app-task-side-panel>
   }
 </div>

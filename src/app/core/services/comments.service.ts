@@ -1,15 +1,13 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, of, delay } from 'rxjs';
 import { Comment, CreateCommentRequest } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentsService {
-  private http = inject(HttpClient);
-  
-  private readonly apiUrl = '/api/comments';
+  // In-memory storage for all comments
+  private allComments: Map<string, Comment[]> = new Map();
   
   // Signals for reactive state
   private _comments = signal<Comment[]>([]);
@@ -25,36 +23,53 @@ export class CommentsService {
     this._isLoading.set(true);
     this._error.set(null);
 
-    const params = new HttpParams().set('taskId', taskId);
-
-    return this.http.get<Comment[]>(this.apiUrl, { params }).pipe(
-      tap(comments => {
-        this._comments.set(comments);
-        this._isLoading.set(false);
-      }),
-      catchError(error => {
-        this._isLoading.set(false);
-        this._error.set(error.error?.message || 'Failed to load comments');
-        return throwError(() => error);
-      })
+    // Get comments for this task from in-memory storage
+    const taskComments = this.allComments.get(taskId) || [];
+    
+    // Simulate async loading
+    return of(taskComments).pipe(
+      delay(200)
     );
+  }
+
+  // Call this after subscribe to update signal state
+  setLoadedComments(comments: Comment[]): void {
+    this._comments.set(comments);
+    this._isLoading.set(false);
   }
 
   addComment(data: CreateCommentRequest): Observable<Comment> {
     this._isLoading.set(true);
     this._error.set(null);
 
-    return this.http.post<Comment>(this.apiUrl, data).pipe(
-      tap(comment => {
-        this._comments.update(comments => [...comments, comment]);
-        this._isLoading.set(false);
-      }),
-      catchError(error => {
-        this._isLoading.set(false);
-        this._error.set(error.error?.message || 'Failed to add comment');
-        return throwError(() => error);
-      })
-    );
+    // Create new comment with generated ID
+    const newComment: Comment = {
+      id: crypto.randomUUID(),
+      content: data.content,
+      task_id: data.taskId,
+      user_id: 'current-user',
+      user_name: 'You',
+      created_at: new Date().toISOString()
+    };
+
+    // Store in memory
+    const taskComments = this.allComments.get(data.taskId) || [];
+    taskComments.push(newComment);
+    this.allComments.set(data.taskId, taskComments);
+
+    // Update signal
+    this._comments.update(comments => [...comments, newComment]);
+    this._isLoading.set(false);
+
+    return of(newComment).pipe(delay(100));
+  }
+
+  deleteComment(commentId: string, taskId: string): Observable<void> {
+    const taskComments = this.allComments.get(taskId) || [];
+    const filteredComments = taskComments.filter(c => c.id !== commentId);
+    this.allComments.set(taskId, filteredComments);
+    this._comments.set(filteredComments);
+    return of(void 0);
   }
 
   clearComments(): void {

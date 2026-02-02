@@ -1,25 +1,53 @@
-<mat-card class="team-card" (click)="openTeam.emit(team())">
-  <mat-card-header>
-    <div mat-card-avatar class="team-avatar">
-      <mat-icon>groups</mat-icon>
+<div class="team-card" (click)="openTeam.emit(team())">
+  <div class="card-header">
+    <div class="team-icon" [style.background]="getTeamGradient()">
+      {{ getTeamInitial() }}
     </div>
-    <mat-card-title>{{ team().name }}</mat-card-title>
-    <mat-card-subtitle>
-      <mat-icon>person</mat-icon>
-      {{ team().members_count }} {{ team().members_count === 1 ? 'member' : 'members' }}
-    </mat-card-subtitle>
-  </mat-card-header>
-  
-  <mat-card-actions align="end">
-    <button mat-icon-button 
-            color="primary" 
-            matTooltip="Add Member"
-            (click)="onAddMember($event)">
-      <mat-icon>person_add</mat-icon>
+    <div class="team-info">
+      <h3 class="team-name">{{ team().name }}</h3>
+      <span class="team-members">
+        <mat-icon>people_outline</mat-icon>
+        {{ team().members_count }} {{ team().members_count === 1 ? 'member' : 'members' }}
+      </span>
+    </div>
+    <button class="menu-btn" (click)="onMenuClick($event)">
+      <mat-icon>more_horiz</mat-icon>
     </button>
-    <button mat-button color="primary" (click)="onOpen($event)">
-      <mat-icon>arrow_forward</mat-icon>
-      Open
-    </button>
-  </mat-card-actions>
-</mat-card>
+  </div>
+
+  <div class="card-stats">
+    <div class="stat">
+      <span class="stat-value">12</span>
+      <span class="stat-label">Tasks</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">3</span>
+      <span class="stat-label">Projects</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">85%</span>
+      <span class="stat-label">Progress</span>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="member-avatars">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="avatar" [style.background]="getMemberColor(i)">
+          {{ getMemberInitial(i) }}
+        </div>
+      }
+      @if (team().members_count > 3) {
+        <div class="avatar more">+{{ team().members_count - 3 }}</div>
+      }
+    </div>
+    <div class="card-actions">
+      <button class="action-btn" matTooltip="Add Member" (click)="onAddMember($event)">
+        <mat-icon>person_add</mat-icon>
+      </button>
+      <button class="action-btn primary" matTooltip="Open" (click)="onOpen($event)">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

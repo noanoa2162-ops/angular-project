@@ -4,20 +4,25 @@ import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const token = authService.getToken();
-
-  // Clone request with Content-Type header
-  let headers: { [key: string]: string } = {
-    'Content-Type': 'application/json'
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  
+  // Skip adding token for auth endpoints (login/register)
+  const isAuthEndpoint = req.url.includes('/auth/login') || req.url.includes('/auth/register');
+  
+  if (isAuthEndpoint) {
+    // Don't add Authorization header for login/register
+    return next(req);
   }
 
-  const clonedReq = req.clone({
-    setHeaders: headers
-  });
+  const token = authService.getToken();
 
-  return next(clonedReq);
+  if (token) {
+    const clonedReq = req.clone({
+      setHeaders: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return next(clonedReq);
+  }
+
+  return next(req);
 };

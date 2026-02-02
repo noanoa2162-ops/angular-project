@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,16 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Task Manager';
+  private authService = inject(AuthService);
+
+  ngOnInit() {
+    const token = this.authService.getToken();
+    if (token) {
+      this.authService.getCurrentUser().subscribe({
+        error: () => this.authService.logout()
+      });
+    }
+  }
 }

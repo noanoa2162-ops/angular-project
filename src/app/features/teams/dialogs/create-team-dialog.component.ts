@@ -24,6 +24,7 @@ export class CreateTeamDialogComponent {
   private dialogRef = inject(MatDialogRef<CreateTeamDialogComponent>);
   
   teamName = '';
+  teamDescription = '';
 
   onCancel(): void {
     this.dialogRef.close();
@@ -31,7 +32,10 @@ export class CreateTeamDialogComponent {
 
   onCreate(): void {
     if (this.teamName.trim()) {
-      this.dialogRef.close(this.teamName.trim());
+      this.dialogRef.close({
+        name: this.teamName.trim(),
+        description: this.teamDescription.trim()
+      });
     }
   }
 }

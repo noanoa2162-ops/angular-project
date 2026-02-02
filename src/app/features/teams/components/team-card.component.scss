@@ -1,39 +1,214 @@
+// Team Card - Clean Light Style
+$bg-white: #ffffff;
+$bg-hover: #f8fafc;
+$primary: #7c3aed;
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$text-muted: #94a3b8;
+$border: #e2e8f0;
+
 .team-card {
+  background: $bg-white;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 1.5rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(124, 58, 237, 0.1);
+    border-color: rgba(124, 58, 237, 0.3);
+  }
 }
 
-.team-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-.team-avatar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.card-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-
-  mat-icon {
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  
+  .team-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: white;
+    flex-shrink: 0;
+  }
+  
+  .team-info {
+    flex: 1;
+    min-width: 0;
+    
+    .team-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin: 0 0 0.375rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .team-members {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.85rem;
+      color: $text-secondary;
+      
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: $text-muted;
+      }
+    }
+  }
+  
+  .menu-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: $text-muted;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    &:hover {
+      background: $bg-hover;
+      color: $text-secondary;
+    }
   }
 }
 
-mat-card-subtitle {
+.card-stats {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: 12px;
+  
+  .stat {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    
+    &:not(:last-child) {
+      border-right: 1px solid $border;
+    }
+    
+    .stat-value {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      display: block;
+      font-size: 0.75rem;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.card-footer {
   display: flex;
   align-items: center;
-  gap: 4px;
-
-  mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+  justify-content: space-between;
+  
+  .member-avatars {
+    display: flex;
+    
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: white;
+      border: 2px solid white;
+      margin-left: -8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      
+      &:first-child {
+        margin-left: 0;
+      }
+      
+      &.more {
+        background: #e2e8f0;
+        color: $text-secondary;
+        font-size: 0.7rem;
+      }
+    }
   }
-}
-
-mat-card-actions {
-  padding: 8px 16px;
+  
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      
+      &:not(.primary) {
+        background: $bg-hover;
+        color: $text-secondary;
+        
+        &:hover {
+          background: #e2e8f0;
+          color: $text-primary;
+        }
+      }
+      
+      &.primary {
+        background: linear-gradient(135deg, $primary, #a78bfa);
+        color: white;
+        
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+      }
+    }
+  }
 }

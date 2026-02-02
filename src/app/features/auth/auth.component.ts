@@ -2,13 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/services';
 
 @Component({
@@ -16,14 +9,7 @@ import { AuthService } from '../../core/services';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
-    MatIconModule
+    ReactiveFormsModule
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss'
@@ -35,6 +21,13 @@ export class AuthComponent {
 
   selectedTab = 0;
   hidePassword = signal(true);
+  
+  // Focus states
+  emailFocused = false;
+  passwordFocused = false;
+  nameFocused = false;
+  regEmailFocused = false;
+  regPasswordFocused = false;
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -55,19 +48,27 @@ export class AuthComponent {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login({ email: email!, password: password! }).subscribe({
-        next: () => this.router.navigate(['/teams']),
-        error: () => {} // Error handled in service
+        next: () => {
+          this.router.navigate(['/teams']);
+        },
+        error: () => {}
       });
     }
   }
 
   onRegister(): void {
-    if (this.registerForm.valid) {
+    if (this.registerForm.valid && !this.authService.isLoading()) {
       const { name, email, password } = this.registerForm.value;
       this.authService.register({ name: name!, email: email!, password: password! }).subscribe({
-        next: () => this.router.navigate(['/teams']),
+        next: () => {
+          this.router.navigate(['/teams']);
+        },
         error: () => {} // Error handled in service
       });
     }
+  }
+
+  goToLanding(): void {
+    this.router.navigate(['/']);
   }
 }

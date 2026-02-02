@@ -6,6 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 import { TaskPriority } from '../../../core/models';
 
 @Component({
@@ -18,7 +21,10 @@ import { TaskPriority } from '../../../core/models';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule
   ],
   templateUrl: './create-task-dialog.component.html',
   styleUrl: './create-task-dialog.component.scss'
@@ -29,6 +35,7 @@ export class CreateTaskDialogComponent {
   title = '';
   description = '';
   priority: TaskPriority = 'medium';
+  dueDate: Date | null = null;
 
   onCancel(): void {
     this.dialogRef.close();
@@ -39,8 +46,13 @@ export class CreateTaskDialogComponent {
       this.dialogRef.close({
         title: this.title.trim(),
         description: this.description.trim(),
-        priority: this.priority
+        priority: this.priority,
+        dueDate: this.dueDate ? this.formatDate(this.dueDate) : null
       });
     }
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 }

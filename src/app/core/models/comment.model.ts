@@ -9,5 +9,5 @@ export interface Comment {
 
 export interface CreateCommentRequest {
   content: string;
-  task_id: string;
+  taskId: string;
 }

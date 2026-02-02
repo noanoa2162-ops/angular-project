@@ -1,38 +1,385 @@
-
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// Crystal Clear Task Management - LUMINA
 @use '@angular/material' as mat;
+@use 'sass:map';
+@use 'sass:color';
 
+// ============================================
+// COLOR PALETTE - ClickUp Light Style
+// ============================================
+$colors: (
+  // Backgrounds
+  bg-main: #f7f8fa,
+  bg-white: #ffffff,
+  bg-card: #ffffff,
+  bg-hover: #f0f1f3,
+  bg-input: #ffffff,
+  
+  // Primary accent (ClickUp blue)
+  primary: #7b68ee,
+  primary-hover: #6c5ce7,
+  primary-light: rgba(123, 104, 238, 0.1),
+  
+  // Success/Warning/Error
+  success: #6bc950,
+  warning: #ffb347,
+  error: #ff6b6b,
+  
+  // Text
+  text-primary: #1a1a2e,
+  text-secondary: #6b7280,
+  text-muted: #9ca3af,
+  
+  // Borders
+  border: #e5e7eb,
+  border-light: #f3f4f6,
+);
+
+// Helper function
+@function color($key) {
+  @return map.get($colors, $key);
+}
+
+// ============================================
+// ANGULAR MATERIAL THEME
+// ============================================
 html {
   height: 100%;
   @include mat.theme((
     color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
+      primary: mat.$violet-palette,
+      tertiary: mat.$cyan-palette,
     ),
     typography: Roboto,
     density: 0,
   ));
 }
 
+// ============================================
+// BASE STYLES
+// ============================================
+* {
+  box-sizing: border-box;
+}
+
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
+  background: color(bg-main);
+  color: color(text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   margin: 0;
   height: 100%;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
-/* You can add global styles to this file, and also import other style files */
+
+// ============================================
+// SCROLLBAR STYLING
+// ============================================
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+  
+  &:hover {
+    background: #9ca3af;
+  }
+}
+
+// ============================================
+// MATERIAL OVERRIDES - LIGHT THEME
+// ============================================
+
+// Cards
+.mat-mdc-card {
+  --mdc-elevated-card-container-color: #{color(bg-white)};
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+// Dialogs
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #{color(bg-white)};
+  border-radius: 12px !important;
+  
+  .mdc-dialog__surface {
+    background: color(bg-white) !important;
+    border-radius: 12px !important;
+  }
+}
+
+// Form Fields
+.mat-mdc-form-field {
+  --mdc-filled-text-field-container-color: #{color(bg-input)};
+  --mdc-outlined-text-field-outline-color: #{color(border)};
+  --mdc-outlined-text-field-focus-outline-color: #{color(primary)};
+  --mdc-outlined-text-field-hover-outline-color: #{color(text-muted)};
+  --mdc-outlined-text-field-label-text-color: #{color(text-secondary)};
+  --mdc-outlined-text-field-input-text-color: #{color(text-primary)};
+  
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
+  }
+}
+
+// Buttons
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+}
+
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-flat-button.mat-primary {
+  --mdc-filled-button-container-color: #{color(primary)};
+  --mdc-filled-button-label-text-color: #ffffff;
+}
+
+// Menu
+.mat-mdc-menu-panel {
+  background: color(bg-white) !important;
+  border: 1px solid color(border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  
+  .mat-mdc-menu-item {
+    color: color(text-primary);
+    
+    &:hover {
+      background: color(bg-hover);
+    }
+  }
+}
+
+// Spinner
+.mat-mdc-progress-spinner circle {
+  stroke: color(primary) !important;
+}
+
+// Tabs
+.mat-mdc-tab-group {
+  --mdc-tab-indicator-active-indicator-color: #{color(primary)};
+  --mat-tab-header-active-label-text-color: #{color(primary)};
+  --mat-tab-header-active-ripple-color: #{color(primary-light)};
+  --mat-tab-header-inactive-label-text-color: #{color(text-secondary)};
+}
+
+// Select
+.mat-mdc-select {
+  --mat-select-trigger-text-color: #{color(text-primary)};
+  --mat-select-arrow-color: #{color(text-secondary)};
+}
+
+.mat-mdc-select-panel {
+  background: color(bg-white) !important;
+  border: 1px solid color(border) !important;
+  
+  .mat-mdc-option {
+    color: color(text-primary);
+    
+    &:hover {
+      background: color(bg-hover);
+    }
+    
+    &.mat-mdc-option-active {
+      background: color(primary-light);
+    }
+  }
+}
+
+// Tooltip
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-color: #{color(text-primary)};
+  --mdc-plain-tooltip-supporting-text-color: #ffffff;
+}
+
+// ============================================
+// UTILITY CLASSES
+// ============================================
+.text-primary { color: color(text-primary); }
+.text-secondary { color: color(text-secondary); }
+.text-muted { color: color(text-muted); }
+
+.bg-main { background: color(bg-main); }
+.bg-white { background: color(bg-white); }
+.bg-card { background: color(bg-card); }
+
+// ============================================
+// SHARED COMPONENT STYLES
+// ============================================
+
+// Page Container
+.page-container {
+  padding: 24px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Page Header
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: color(text-primary);
+  }
+}
+
+// Primary Button
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: color(primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: color(primary-hover);
+  }
+  
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Secondary Button
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: color(text-secondary);
+  border: 1px solid color(border);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: color(bg-hover);
+    color: color(text-primary);
+  }
+}
+
+// Card Grid
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: color(text-muted);
+  
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: color(text-secondary);
+  }
+  
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+// Form Input Styles (for custom forms)
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid color(border);
+  border-radius: 6px;
+  background: color(bg-white);
+  color: color(text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  &::placeholder {
+    color: color(text-muted);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: color(primary);
+    box-shadow: 0 0 0 3px color(primary-light);
+  }
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: color(text-secondary);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+// Dialog Styles
+.dialog-container {
+  padding: 24px;
+  
+  .dialog-header {
+    margin-bottom: 24px;
+    
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+      color: color(text-primary);
+    }
+    
+    p {
+      margin: 8px 0 0 0;
+      font-size: 14px;
+      color: color(text-secondary);
+    }
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid color(border);
+  }
+}

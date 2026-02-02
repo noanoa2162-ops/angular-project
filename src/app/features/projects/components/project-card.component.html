@@ -1,19 +1,29 @@
 <mat-card class="project-card" (click)="openProject.emit(project())">
-  <mat-card-header>
-    <div mat-card-avatar class="project-avatar">
+  <div class="card-header">
+    <div class="project-icon">
       <mat-icon>folder_open</mat-icon>
     </div>
-    <mat-card-title>{{ project().name }}</mat-card-title>
-  </mat-card-header>
+    <div class="project-info">
+      <h3 class="project-name">{{ project().name }}</h3>
+      <p class="project-description">{{ project().description || 'No description provided' }}</p>
+    </div>
+  </div>
   
-  <mat-card-content>
-    <p class="description">{{ project().description || 'No description' }}</p>
-  </mat-card-content>
-  
-  <mat-card-actions align="end">
-    <button mat-button color="primary" (click)="onOpen($event)">
-      <mat-icon>dashboard</mat-icon>
-      Open Board
+  <div class="card-footer">
+    <div class="project-meta">
+      @if (project().created_at) {
+        <span class="meta-item">
+          <mat-icon>calendar_today</mat-icon>
+          {{ project().created_at | date:'mediumDate' }}
+        </span>
+      }
+    </div>
+    <button mat-icon-button 
+            color="primary" 
+            matTooltip="Open Board"
+            class="open-btn"
+            (click)="onOpen($event)">
+      <mat-icon>arrow_forward</mat-icon>
     </button>
-  </mat-card-actions>
+  </div>
 </mat-card>

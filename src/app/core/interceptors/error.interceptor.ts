@@ -10,7 +10,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
+      // Don't logout on 401 for auth endpoints (login/register)
+      const isAuthEndpoint = req.url.includes('/auth/login') || req.url.includes('/auth/register');
+      
+      if (error.status === 401 && !isAuthEndpoint) {
         // Unauthorized - token expired or invalid
         authService.logout();
         router.navigate(['/auth']);

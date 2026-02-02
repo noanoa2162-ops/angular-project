@@ -1,121 +1,350 @@
-<div class="auth-container">
-  <mat-card class="auth-card">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>task_alt</mat-icon>
-        Task Manager
-      </mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <mat-tab-group 
-        [(selectedIndex)]="selectedTab" 
-        (selectedIndexChange)="onTabChange()"
-        animationDuration="200ms">
+<div class="auth-page">
+  <!-- Left Side - Visual Branding -->
+  <div class="auth-visual">
+    <div class="visual-content">
+      <!-- Floating Cards Animation -->
+      <div class="floating-elements">
+        <div class="float-card card-1">
+          <div class="card-icon purple">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <span class="card-title">Task Completed</span>
+            <span class="card-subtitle">Design Review</span>
+          </div>
+        </div>
         
-        <!-- Login Tab -->
-        <mat-tab label="Login">
-          <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="Enter your email">
-              <mat-icon matSuffix>email</mat-icon>
+        <div class="float-card card-2">
+          <div class="card-icon teal">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <span class="card-title">Team Members</span>
+            <span class="card-subtitle">12 active now</span>
+          </div>
+        </div>
+        
+        <div class="float-card card-3">
+          <div class="mini-chart">
+            <div class="bar" style="height: 45%"></div>
+            <div class="bar" style="height: 70%"></div>
+            <div class="bar" style="height: 55%"></div>
+            <div class="bar" style="height: 85%"></div>
+            <div class="bar" style="height: 65%"></div>
+            <div class="bar active" style="height: 95%"></div>
+          </div>
+          <span class="chart-label">Weekly Progress +23%</span>
+        </div>
+
+        <div class="float-card card-4">
+          <div class="notification-dot"></div>
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Main Branding -->
+      <div class="branding">
+        <div class="logo-large">
+          <span class="lumina-logo">
+            <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+          </span>
+        </div>
+        
+        <h1>
+          Organize your work,<br>
+          <span class="gradient-text">simplify your life</span>
+        </h1>
+        
+        <p class="tagline">
+          Join thousands of teams using LUMINA to see their work clearly, 
+          track progress, and achieve goals together.
+        </p>
+
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Active Users</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat">
+            <span class="stat-number">50K+</span>
+            <span class="stat-label">Tasks Done</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat">
+            <span class="stat-number">99%</span>
+            <span class="stat-label">Satisfaction</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+  </div>
+
+  <!-- Right Side - Forms -->
+  <div class="auth-form-side">
+    <div class="form-wrapper">
+      <!-- Mobile Logo -->
+      <div class="mobile-logo" (click)="goToLanding()">
+        <span class="lumina-logo">
+          <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+        </span>
+      </div>
+      
+      <div class="tab-container">
+        <div class="tab-buttons">
+          <button 
+            class="tab-btn" 
+            [class.active]="selectedTab === 0"
+            (click)="selectedTab = 0; onTabChange()">
+            Sign In
+          </button>
+          <button 
+            class="tab-btn" 
+            [class.active]="selectedTab === 1"
+            (click)="selectedTab = 1; onTabChange()">
+            Sign Up
+          </button>
+          <div class="tab-indicator" [class.right]="selectedTab === 1"></div>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      @if (selectedTab === 0) {
+        <div class="form-panel" [@fadeSlide]>
+          <div class="form-header">
+            <h2>Welcome back! 👋</h2>
+            <p>Enter your credentials to continue</p>
+          </div>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <div class="input-group">
+              <label>Email Address</label>
+              <div class="input-wrapper" [class.focused]="emailFocused" [class.has-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="m22 6-10 7L2 6" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <input 
+                  type="email" 
+                  formControlName="email" 
+                  placeholder="you@example.com"
+                  (focus)="emailFocused = true"
+                  (blur)="emailFocused = false">
+                <div class="input-focus-ring"></div>
+              </div>
               @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-                <mat-error>Email is required</mat-error>
+                <span class="error-text">Email is required</span>
               }
               @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
-                <mat-error>Please enter a valid email</mat-error>
+                <span class="error-text">Please enter a valid email</span>
               }
-            </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Password</mat-label>
-              <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Enter your password">
-              <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())">
-                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-              </button>
+            <div class="input-group">
+              <div class="label-row">
+                <label>Password</label>
+                <a class="forgot-link">Forgot password?</a>
+              </div>
+              <div class="input-wrapper" [class.focused]="passwordFocused" [class.has-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <input 
+                  [type]="hidePassword() ? 'password' : 'text'" 
+                  formControlName="password" 
+                  placeholder="••••••••"
+                  (focus)="passwordFocused = true"
+                  (blur)="passwordFocused = false">
+                <button type="button" class="toggle-password" (click)="hidePassword.set(!hidePassword())">
+                  @if (hidePassword()) {
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none"><path d="m1 1 22 22M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="currentColor" stroke-width="1.5"/></svg>
+                  }
+                </button>
+                <div class="input-focus-ring"></div>
+              </div>
               @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-                <mat-error>Password is required</mat-error>
+                <span class="error-text">Password is required</span>
               }
-              @if (loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched) {
-                <mat-error>Password must be at least 6 characters</mat-error>
-              }
-            </mat-form-field>
+            </div>
+
+            <label class="checkbox-wrapper">
+              <input type="checkbox">
+              <span class="custom-checkbox">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="checkbox-label">Remember me for 30 days</span>
+            </label>
 
             @if (authService.error()) {
-              <div class="error-message">
-                <mat-icon>error</mat-icon>
-                {{ authService.error() }}
+              <div class="error-banner">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>{{ authService.error() }}</span>
               </div>
             }
 
-            <button mat-raised-button color="primary" type="submit" 
-                    [disabled]="loginForm.invalid || authService.isLoading()">
+            <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || authService.isLoading()">
               @if (authService.isLoading()) {
-                <mat-spinner diameter="20"></mat-spinner>
+                <div class="spinner"></div>
               } @else {
-                Login
+                <span>Sign In</span>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               }
             </button>
           </form>
-        </mat-tab>
 
-        <!-- Register Tab -->
-        <mat-tab label="Register">
-          <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
-            <mat-form-field appearance="outline">
-              <mat-label>Name</mat-label>
-              <input matInput formControlName="name" placeholder="Enter your name">
-              <mat-icon matSuffix>person</mat-icon>
+          <p class="switch-text">
+            Don't have an account? <a (click)="selectedTab = 1; onTabChange()">Create free account</a>
+          </p>
+        </div>
+      }
+
+      <!-- Register Form -->
+      @if (selectedTab === 1) {
+        <div class="form-panel">
+          <div class="form-header">
+            <h2>Get started free ✨</h2>
+            <p>Create your account in seconds</p>
+          </div>
+
+          <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <div class="input-group">
+              <label>Full Name</label>
+              <div class="input-wrapper" [class.focused]="nameFocused" [class.has-error]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  formControlName="name" 
+                  placeholder="John Doe"
+                  (focus)="nameFocused = true"
+                  (blur)="nameFocused = false">
+                <div class="input-focus-ring"></div>
+              </div>
               @if (registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched) {
-                <mat-error>Name is required</mat-error>
+                <span class="error-text">Name is required</span>
               }
-            </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="Enter your email">
-              <mat-icon matSuffix>email</mat-icon>
+            <div class="input-group">
+              <label>Email Address</label>
+              <div class="input-wrapper" [class.focused]="regEmailFocused" [class.has-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="m22 6-10 7L2 6" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <input 
+                  type="email" 
+                  formControlName="email" 
+                  placeholder="you@example.com"
+                  (focus)="regEmailFocused = true"
+                  (blur)="regEmailFocused = false">
+                <div class="input-focus-ring"></div>
+              </div>
               @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
-                <mat-error>Email is required</mat-error>
+                <span class="error-text">Email is required</span>
               }
               @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
-                <mat-error>Please enter a valid email</mat-error>
+                <span class="error-text">Please enter a valid email</span>
               }
-            </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Password</mat-label>
-              <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Enter your password">
-              <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())">
-                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-              </button>
+            <div class="input-group">
+              <label>Password</label>
+              <div class="input-wrapper" [class.focused]="regPasswordFocused" [class.has-error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <input 
+                  [type]="hidePassword() ? 'password' : 'text'" 
+                  formControlName="password" 
+                  placeholder="Min. 6 characters"
+                  (focus)="regPasswordFocused = true"
+                  (blur)="regPasswordFocused = false">
+                <button type="button" class="toggle-password" (click)="hidePassword.set(!hidePassword())">
+                  @if (hidePassword()) {
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none"><path d="m1 1 22 22M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="currentColor" stroke-width="1.5"/></svg>
+                  }
+                </button>
+                <div class="input-focus-ring"></div>
+              </div>
               @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
-                <mat-error>Password is required</mat-error>
+                <span class="error-text">Password is required</span>
               }
               @if (registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched) {
-                <mat-error>Password must be at least 6 characters</mat-error>
+                <span class="error-text">Password must be at least 6 characters</span>
               }
-            </mat-form-field>
+            </div>
+
+            <label class="checkbox-wrapper terms">
+              <input type="checkbox">
+              <span class="custom-checkbox">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="checkbox-label">I agree to the <a>Terms</a> and <a>Privacy Policy</a></span>
+            </label>
 
             @if (authService.error()) {
-              <div class="error-message">
-                <mat-icon>error</mat-icon>
-                {{ authService.error() }}
+              <div class="error-banner">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>{{ authService.error() }}</span>
               </div>
             }
 
-            <button mat-raised-button color="primary" type="submit" 
-                    [disabled]="registerForm.invalid || authService.isLoading()">
+            <button type="submit" class="btn-primary" [disabled]="registerForm.invalid || authService.isLoading()">
               @if (authService.isLoading()) {
-                <mat-spinner diameter="20"></mat-spinner>
+                <div class="spinner"></div>
               } @else {
-                Register
+                <span>Create Account</span>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               }
             </button>
           </form>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
-  </mat-card>
+
+          <p class="switch-text">
+            Already have an account? <a (click)="selectedTab = 0; onTabChange()">Sign in</a>
+          </p>
+        </div>
+      }
+    </div>
+  </div>
 </div>

@@ -1,0 +1,52 @@
+// Landing page logo - starts bold & tight, expands on hover
+.lumina-logo {
+  font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+  letter-spacing: 0.02em;
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  cursor: pointer;
+  transition: letter-spacing 1.2s ease-out, font-weight 1.2s ease-out;
+  margin-top: 8px;
+  
+  // Glowing dot above the logo
+  &::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7px;
+    height: 7px;
+    background: #f093fb;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #f093fb, 0 0 24px rgba(240, 147, 251, 0.5);
+    animation: dotGlow 2s ease-in-out infinite;
+  }
+  
+  span {
+    display: inline-block;
+  }
+  
+  // Expanded state - triggered by hover
+  &:hover {
+    letter-spacing: 0.35em;
+    font-weight: 200;
+  }
+}
+
+@keyframes dotGlow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 12px #f093fb, 0 0 24px rgba(240, 147, 251, 0.5);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 20px #f093fb, 0 0 40px rgba(240, 147, 251, 0.7);
+  }
+}

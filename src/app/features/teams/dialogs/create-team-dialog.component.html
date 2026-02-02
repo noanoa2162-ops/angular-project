@@ -1,15 +1,65 @@
-<h2 mat-dialog-title>Create New Team</h2>
-<mat-dialog-content>
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Team Name</mat-label>
-    <input matInput [(ngModel)]="teamName" placeholder="Enter team name">
-  </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" 
-          [disabled]="!teamName.trim()"
-          (click)="onCreate()">
-    Create
-  </button>
-</mat-dialog-actions>
+<div class="dialog-container">
+  <!-- Dialog Header with Icon -->
+  <div class="dialog-header">
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h2>Create New Team</h2>
+      <p>Teams help you organize projects and collaborate</p>
+    </div>
+  </div>
+  
+  <div class="dialog-content">
+    <!-- Team Name -->
+    <div class="form-group">
+      <label>
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+          <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        Team Name
+      </label>
+      <input 
+        type="text" 
+        [(ngModel)]="teamName" 
+        placeholder="Enter team name (e.g., Marketing Team)"
+        class="dialog-input">
+    </div>
+    
+    <!-- Team Description -->
+    <div class="form-group">
+      <label>
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 6h16M4 10h16M4 14h10M4 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Description
+        <span class="optional">(optional)</span>
+      </label>
+      <textarea 
+        [(ngModel)]="teamDescription" 
+        placeholder="What will this team work on?"
+        class="dialog-textarea"
+        rows="3"></textarea>
+    </div>
+  </div>
+  
+  <div class="dialog-actions">
+    <button class="btn-cancel" (click)="onCancel()">
+      Cancel
+    </button>
+    <button 
+      class="btn-primary" 
+      [disabled]="!teamName.trim()"
+      (click)="onCreate()">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Create Team
+    </button>
+  </div>
+</div>

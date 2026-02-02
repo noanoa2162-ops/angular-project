@@ -1,0 +1,1119 @@
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-landing',
+  standalone: true,
+  styleUrls: ['./landing.component.scss'],
+  template: `
+    <div class="landing-page">
+      <!-- Animated Background -->
+      <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+
+      <!-- Header -->
+      <header class="landing-header">
+        <div class="logo">
+          <span class="lumina-logo">
+            <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+          </span>
+        </div>
+        <nav class="header-nav">
+          <a (click)="scrollTo('features')" class="nav-link">Features</a>
+          <a (click)="scrollTo('pricing')" class="nav-link">Pricing</a>
+          <a (click)="scrollTo('about')" class="nav-link">About</a>
+          <button class="btn-signin" (click)="getStarted()">Sign In</button>
+        </nav>
+      </header>
+
+      <!-- Hero Section -->
+      <main class="hero-section">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-icon">✨</span>
+            <span>Trusted by 10,000+ teams worldwide</span>
+          </div>
+          
+          <h1 class="hero-title">
+            The platform that<br>
+            <span class="gradient-text">works</span> for 
+            <span class="highlight-text">you</span>.
+          </h1>
+          
+          <p class="hero-description">
+            Stop juggling between tools. LUMINA brings clarity to chaos - 
+            see your tasks, docs, and goals through a new lens. Built for visionary teams.
+          </p>
+          
+          <div class="cta-group">
+            <button class="cta-button primary" (click)="getStarted()">
+              Get Started Free
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="cta-button secondary" (click)="scrollTo('features')">
+              <svg viewBox="0 0 24 24" fill="none">
+                <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
+              </svg>
+              Watch Demo
+            </button>
+          </div>
+
+          <div class="social-proof">
+            <div class="avatars">
+              <div class="avatar" style="background: linear-gradient(135deg, #667eea, #764ba2)">J</div>
+              <div class="avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c)">M</div>
+              <div class="avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe)">S</div>
+              <div class="avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7)">A</div>
+            </div>
+            <div class="proof-text">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <span>Loved by <strong>2,500+</strong> happy users</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual -->
+        <div class="hero-visual">
+          <div class="dashboard-preview">
+            <div class="preview-header">
+              <div class="dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="url">lumina.app/dashboard</span>
+            </div>
+            <div class="preview-content">
+              <div class="sidebar-mini">
+                <div class="mini-item active"></div>
+                <div class="mini-item"></div>
+                <div class="mini-item"></div>
+                <div class="mini-item"></div>
+              </div>
+              <div class="main-preview">
+                <div class="column-preview">
+                  <div class="col-header todo">To Do</div>
+                  <div class="task-mini"></div>
+                  <div class="task-mini"></div>
+                  <div class="task-mini"></div>
+                </div>
+                <div class="column-preview">
+                  <div class="col-header progress">In Progress</div>
+                  <div class="task-mini"></div>
+                  <div class="task-mini"></div>
+                </div>
+                <div class="column-preview">
+                  <div class="col-header done">Done</div>
+                  <div class="task-mini"></div>
+                  <div class="task-mini"></div>
+                  <div class="task-mini"></div>
+                  <div class="task-mini"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating Cards -->
+          <div class="floating-card card-1">
+            <div class="card-icon success">✓</div>
+            <div class="card-text">
+              <strong>Task Completed</strong>
+              <span>Design Review</span>
+            </div>
+          </div>
+          
+          <div class="floating-card card-2">
+            <div class="card-icon warning">⚡</div>
+            <div class="card-text">
+              <strong>New Assignment</strong>
+              <span>Sprint Planning</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Features Strip -->
+      <div class="features-strip" id="features">
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Kanban Boards</span>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Team Collaboration</span>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 20V10M18 20V4M6 20v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Analytics</span>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Secure</span>
+        </div>
+      </div>
+
+      <!-- Pricing Section -->
+      <section class="pricing-section" id="pricing">
+        <div class="section-header">
+          <h2>Simple, transparent pricing</h2>
+          <p>No hidden fees. Cancel anytime.</p>
+        </div>
+        <div class="pricing-cards">
+          <div class="pricing-card">
+            <div class="card-header">
+              <h3>Free</h3>
+              <div class="price">$0<span>/month</span></div>
+            </div>
+            <ul class="features-list">
+              <li>Up to 5 team members</li>
+              <li>3 projects</li>
+              <li>Basic analytics</li>
+              <li>Email support</li>
+            </ul>
+            <button class="pricing-btn" (click)="getStarted()">Get Started</button>
+          </div>
+          <div class="pricing-card featured">
+            <div class="badge">Most Popular</div>
+            <div class="card-header">
+              <h3>Pro</h3>
+              <div class="price">$12<span>/month</span></div>
+            </div>
+            <ul class="features-list">
+              <li>Unlimited team members</li>
+              <li>Unlimited projects</li>
+              <li>Advanced analytics</li>
+              <li>Priority support</li>
+              <li>Custom integrations</li>
+            </ul>
+            <button class="pricing-btn primary" (click)="getStarted()">Start Free Trial</button>
+          </div>
+          <div class="pricing-card">
+            <div class="card-header">
+              <h3>Enterprise</h3>
+              <div class="price">Custom</div>
+            </div>
+            <ul class="features-list">
+              <li>Everything in Pro</li>
+              <li>Dedicated support</li>
+              <li>SLA guarantee</li>
+              <li>Custom training</li>
+            </ul>
+            <button class="pricing-btn">Contact Sales</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="about-section" id="about">
+        <div class="about-content">
+          <h2>Built for modern teams</h2>
+          <p>LUMINA was born from a simple idea: work should be crystal clear. We built a tool that lets you see every angle of your projects, bringing focus where there was chaos. Join the clarity revolution.</p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-value">2019</span>
+              <span class="stat-label">Founded</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">50+</span>
+              <span class="stat-label">Countries</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">99.9%</span>
+              <span class="stat-label">Uptime</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="landing-footer">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-text lumina-logo">
+                <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+              </span>
+            </div>
+            <p>Making teamwork simple since 2019.</p>
+          </div>
+          <div class="footer-links">
+            <a (click)="scrollTo('features')">Features</a>
+            <a (click)="scrollTo('pricing')">Pricing</a>
+            <a (click)="scrollTo('about')">About</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 LUMINA. All rights reserved.</span>
+        </div>
+      </footer>
+    </div>
+  `,
+  styles: [`
+    .landing-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8f9fc 0%, #eef2ff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    // Animated Background
+    .bg-shapes {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 600px;
+      height: 600px;
+      background: linear-gradient(135deg, #a78bfa, #818cf8);
+      top: -200px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #4ecdc4, #44d9e8);
+      bottom: -100px;
+      left: -100px;
+      animation-delay: -5s;
+    }
+
+    .shape-3 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #f472b6, #fb7185);
+      top: 50%;
+      left: 30%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(50px, 50px) rotate(5deg); }
+      50% { transform: translate(0, 100px) rotate(0deg); }
+      75% { transform: translate(-50px, 50px) rotate(-5deg); }
+    }
+
+    // Header
+    .landing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 60px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-accent {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-link {
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #4b5563;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #1a1a2e;
+        background: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .btn-signin {
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+      }
+    }
+
+    // Hero Section
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      padding: 60px 80px 100px;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-content {
+      max-width: 600px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+      margin-bottom: 28px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+      .badge-icon {
+        font-size: 16px;
+      }
+    }
+
+    .hero-title {
+      font-size: 62px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: #1a1a2e;
+      margin: 0 0 28px 0;
+      letter-spacing: -1px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #7c3aed, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .highlight-text {
+      background: linear-gradient(135deg, #f472b6, #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-description {
+      font-size: 19px;
+      line-height: 1.7;
+      color: #4b5563;
+      margin: 0 0 36px 0;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .cta-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      &.primary {
+        background: linear-gradient(135deg, #7c3aed, #a78bfa);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+        }
+      }
+
+      &.secondary {
+        background: rgba(255, 255, 255, 0.9);
+        color: #1a1a2e;
+        border: 1px solid #e5e7eb;
+        backdrop-filter: blur(10px);
+
+        &:hover {
+          background: white;
+          border-color: #d1d5db;
+          transform: translateY(-2px);
+        }
+      }
+    }
+
+    .social-proof {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatars {
+      display: flex;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      border: 3px solid white;
+      margin-left: -12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+
+    .proof-text {
+      .stars {
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+
+      span {
+        font-size: 14px;
+        color: #6b7280;
+
+        strong {
+          color: #1a1a2e;
+        }
+      }
+    }
+
+    // Hero Visual
+    .hero-visual {
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .dashboard-preview {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transform: rotateY(-8deg) rotateX(5deg);
+      transition: transform 0.5s ease;
+
+      &:hover {
+        transform: rotateY(-4deg) rotateX(2deg);
+      }
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: #f8f9fc;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+
+      span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+
+        &:nth-child(1) { background: #ff5f57; }
+        &:nth-child(2) { background: #febc2e; }
+        &:nth-child(3) { background: #28c840; }
+      }
+    }
+
+    .url {
+      font-size: 13px;
+      color: #9ca3af;
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+
+    .preview-content {
+      display: flex;
+      padding: 16px;
+      gap: 12px;
+      background: #f8f9fc;
+    }
+
+    .sidebar-mini {
+      width: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px;
+      background: white;
+      border-radius: 10px;
+
+      .mini-item {
+        height: 36px;
+        border-radius: 6px;
+        background: #f0f1f3;
+
+        &.active {
+          background: linear-gradient(135deg, #7c3aed, #a78bfa);
+        }
+      }
+    }
+
+    .main-preview {
+      flex: 1;
+      display: flex;
+      gap: 12px;
+    }
+
+    .column-preview {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .col-header {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+
+      &.todo { background: #fef3c7; color: #d97706; }
+      &.progress { background: #dbeafe; color: #2563eb; }
+      &.done { background: #d1fae5; color: #059669; }
+    }
+
+    .task-mini {
+      height: 40px;
+      background: #f8f9fc;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border-left: 3px solid #e5e7eb;
+
+      &:nth-child(odd) { border-left-color: #f472b6; }
+      &:nth-child(even) { border-left-color: #4ecdc4; }
+    }
+
+    // Floating Cards
+    .floating-card {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      animation: float-card 4s ease-in-out infinite;
+
+      .card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+
+        &.success {
+          background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+          color: #059669;
+        }
+
+        &.warning {
+          background: linear-gradient(135deg, #fef3c7, #fde68a);
+          color: #d97706;
+        }
+      }
+
+      .card-text {
+        display: flex;
+        flex-direction: column;
+
+        strong {
+          font-size: 14px;
+          font-weight: 600;
+          color: #1a1a2e;
+        }
+
+        span {
+          font-size: 12px;
+          color: #9ca3af;
+        }
+      }
+    }
+
+    .card-1 {
+      top: 20%;
+      right: -20px;
+      animation-delay: 0s;
+    }
+
+    .card-2 {
+      bottom: 10%;
+      left: -30px;
+      animation-delay: -2s;
+    }
+
+    @keyframes float-card {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    // Features Strip
+    .features-strip {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(229, 231, 235, 0.8);
+      position: relative;
+      z-index: 10;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #4b5563;
+
+      svg {
+        width: 22px;
+        height: 22px;
+        color: #7c3aed;
+      }
+    }
+
+    // Responsive
+    @media (max-width: 1200px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .hero-content {
+        max-width: 100%;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .cta-group {
+        justify-content: center;
+      }
+
+      .social-proof {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .landing-header {
+        padding: 20px;
+      }
+
+      .header-nav .nav-link {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 42px;
+      }
+
+      .features-strip {
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+    }
+
+    // Pricing Section
+    .pricing-section {
+      padding: 80px 40px;
+      background: #f8f9fc;
+      position: relative;
+      z-index: 10;
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+
+        h2 {
+          font-size: 36px;
+          font-weight: 700;
+          color: #1e293b;
+          margin: 0 0 12px;
+        }
+
+        p {
+          font-size: 16px;
+          color: #64748b;
+        }
+      }
+    }
+
+    .pricing-cards {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e5e7eb;
+      position: relative;
+
+      &.featured {
+        border: 2px solid #7c3aed;
+        transform: scale(1.05);
+        box-shadow: 0 20px 40px -10px rgba(124, 58, 237, 0.2);
+      }
+
+      .badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #7c3aed, #a78bfa);
+        color: white;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .card-header {
+        text-align: center;
+        margin-bottom: 24px;
+
+        h3 {
+          font-size: 20px;
+          font-weight: 600;
+          color: #1e293b;
+          margin: 0 0 8px;
+        }
+
+        .price {
+          font-size: 40px;
+          font-weight: 700;
+          color: #7c3aed;
+
+          span {
+            font-size: 16px;
+            font-weight: 400;
+            color: #64748b;
+          }
+        }
+      }
+
+      .features-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+
+        li {
+          padding: 10px 0;
+          color: #4b5563;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          &::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .pricing-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+        border: 1px solid #e5e7eb;
+        color: #374151;
+
+        &:hover {
+          background: #f9fafb;
+        }
+
+        &.primary {
+          background: linear-gradient(135deg, #7c3aed, #a78bfa);
+          border: none;
+          color: white;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(124, 58, 237, 0.4);
+          }
+        }
+      }
+    }
+
+    // About Section
+    .about-section {
+      padding: 80px 40px;
+      background: white;
+      position: relative;
+      z-index: 10;
+
+      .about-content {
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+
+        h2 {
+          font-size: 36px;
+          font-weight: 700;
+          color: #1e293b;
+          margin: 0 0 20px;
+        }
+
+        p {
+          font-size: 17px;
+          line-height: 1.7;
+          color: #64748b;
+          margin: 0 0 40px;
+        }
+      }
+
+      .about-stats {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+
+        .stat-item {
+          text-align: center;
+
+          .stat-value {
+            display: block;
+            font-size: 32px;
+            font-weight: 700;
+            color: #7c3aed;
+          }
+
+          .stat-label {
+            font-size: 14px;
+            color: #64748b;
+          }
+        }
+      }
+    }
+
+    // Footer
+    .landing-footer {
+      background: #1e293b;
+      padding: 60px 40px 20px;
+      position: relative;
+      z-index: 10;
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto 40px;
+      }
+
+      .footer-brand {
+        .logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 12px;
+
+          .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+              width: 20px;
+              height: 20px;
+              color: white;
+            }
+          }
+
+          span {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+          }
+        }
+
+        p {
+          color: #94a3b8;
+          font-size: 14px;
+          margin: 0;
+        }
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 32px;
+
+        a {
+          color: #94a3b8;
+          font-size: 14px;
+          cursor: pointer;
+          transition: color 0.2s;
+
+          &:hover {
+            color: white;
+          }
+        }
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid #334155;
+
+        span {
+          color: #64748b;
+          font-size: 13px;
+        }
+      }
+    }
+
+    @media (max-width: 900px) {
+      .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+
+      .about-stats {
+        gap: 30px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+      }
+    }
+  `]
+})
+export class LandingComponent {
+  constructor(private router: Router) {}
+
+  getStarted(): void {
+    this.router.navigate(['/auth']);
+  }
+
+  scrollTo(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
