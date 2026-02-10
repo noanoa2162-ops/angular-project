@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../core/services';
+import { AuthService } from '../../core/services';
 
 interface Notification {
   id: string;
