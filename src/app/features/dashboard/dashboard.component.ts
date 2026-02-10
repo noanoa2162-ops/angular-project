@@ -827,11 +827,16 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadAllTasks(): void {
-    // Load tasks from localStorage or API
-    const storedTasks = localStorage.getItem('dashboard_tasks');
-    if (storedTasks) {
-      this.allTasks.set(JSON.parse(storedTasks));
-    }
+    // Load all tasks from the API
+    this.tasksService.getTasks().subscribe({
+      next: (tasks) => {
+        this.allTasks.set(tasks);
+      },
+      error: (err) => {
+        console.error('Failed to load tasks:', err);
+        this.allTasks.set([]);
+      }
+    });
   }
 
   getTeamColor(teamId: string): string {
