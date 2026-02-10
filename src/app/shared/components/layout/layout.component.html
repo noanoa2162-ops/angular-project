@@ -1,0 +1,136 @@
+<div class="app-layout">
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <div class="logo" (click)="goToDashboard()">
+        <span class="lumina-logo">
+          <span class="l">L</span><span class="u">U</span><span class="m">M</span><span class="i">I</span><span class="n">N</span><span class="a">A</span>
+        </span>
+      </div>
+      <nav class="nav-links">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Dashboard
+        </a>
+        <a routerLink="/teams" routerLinkActive="active" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Teams
+        </a>
+      </nav>
+    </div>
+    <div class="nav-right">
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input 
+          type="text" 
+          placeholder="Search teams..." 
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="performSearch()"
+        />
+        @if (searchQuery) {
+          <button class="clear-search" (click)="clearSearch()">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        }
+      </div>
+      
+      <!-- Notifications Dropdown -->
+      <button class="nav-btn notification" [matMenuTriggerFor]="notifMenu">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        @if (unreadCount() > 0) {
+          <span class="notification-dot">{{ unreadCount() }}</span>
+        }
+      </button>
+      
+      <mat-menu #notifMenu="matMenu" class="notif-menu-panel">
+        <div class="notif-header" (click)="$event.stopPropagation()">
+          <h4>Notifications</h4>
+          @if (unreadCount() > 0) {
+            <button class="mark-read" (click)="markAllRead()">Mark all read</button>
+          }
+        </div>
+        <mat-divider></mat-divider>
+        @for (notif of notifications(); track notif.id) {
+          <button mat-menu-item class="notif-item" [class.unread]="!notif.read">
+            <div class="notif-icon" [class]="notif.type">
+              <mat-icon>{{ getNotifIcon(notif.type) }}</mat-icon>
+            </div>
+            <div class="notif-content">
+              <span class="notif-text">{{ notif.message }}</span>
+              <span class="notif-time">{{ notif.time }}</span>
+            </div>
+          </button>
+        }
+        @if (notifications().length === 0) {
+          <div class="notif-empty">
+            <mat-icon>notifications_off</mat-icon>
+            <p>No notifications yet</p>
+          </div>
+        }
+      </mat-menu>
+      
+      <!-- User Menu Dropdown -->
+      <div class="user-menu" [matMenuTriggerFor]="userMenu">
+        <div class="user-avatar">
+          {{ getUserInitial() }}
+        </div>
+        <div class="user-info">
+          <span class="user-name">{{ userName() }}</span>
+          <span class="user-role">Team Member</span>
+        </div>
+        <button class="dropdown-btn">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      
+      <mat-menu #userMenu="matMenu" class="user-menu-panel">
+        <div class="menu-header" (click)="$event.stopPropagation()">
+          <div class="menu-avatar">{{ getUserInitial() }}</div>
+          <div class="menu-user-info">
+            <span class="menu-user-name">{{ userName() }}</span>
+            <span class="menu-user-email">{{ userEmail() }}</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()" class="logout-btn">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>

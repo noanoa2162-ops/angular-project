@@ -1,0 +1,151 @@
+<div class="settings-page">
+  <div class="settings-container">
+    <!-- Header -->
+    <div class="settings-header">
+      <button class="btn-back" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Settings</h1>
+    </div>
+
+    <!-- Settings Sections -->
+    <div class="settings-content">
+      <!-- Notifications -->
+      <div class="settings-card">
+        <div class="card-header">
+          <div class="card-icon notifications">
+            <mat-icon>notifications</mat-icon>
+          </div>
+          <div class="card-info">
+            <h3>Notifications</h3>
+            <p>Manage your notification preferences</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Email Notifications</span>
+              <span class="setting-desc">Receive email updates about your tasks</span>
+            </div>
+            <mat-slide-toggle [(ngModel)]="emailNotifications" color="primary"></mat-slide-toggle>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Push Notifications</span>
+              <span class="setting-desc">Receive push notifications in browser</span>
+            </div>
+            <mat-slide-toggle [(ngModel)]="pushNotifications" color="primary"></mat-slide-toggle>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Task Reminders</span>
+              <span class="setting-desc">Get reminded about upcoming deadlines</span>
+            </div>
+            <mat-slide-toggle [(ngModel)]="taskReminders" color="primary"></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appearance -->
+      <div class="settings-card">
+        <div class="card-header">
+          <div class="card-icon appearance">
+            <mat-icon>palette</mat-icon>
+          </div>
+          <div class="card-info">
+            <h3>Appearance</h3>
+            <p>Customize how LUMINA looks</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="theme-selector">
+            <span class="setting-title">Theme</span>
+            <div class="theme-options">
+              <button class="theme-option" [class.active]="theme === 'light'" (click)="theme = 'light'">
+                <mat-icon>light_mode</mat-icon>
+                <span>Light</span>
+              </button>
+              <button class="theme-option" [class.active]="theme === 'dark'" (click)="theme = 'dark'">
+                <mat-icon>dark_mode</mat-icon>
+                <span>Dark</span>
+              </button>
+              <button class="theme-option" [class.active]="theme === 'system'" (click)="theme = 'system'">
+                <mat-icon>devices</mat-icon>
+                <span>System</span>
+              </button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Compact Mode</span>
+              <span class="setting-desc">Show more content with smaller spacing</span>
+            </div>
+            <mat-slide-toggle [(ngModel)]="compactMode" color="primary"></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy & Security -->
+      <div class="settings-card">
+        <div class="card-header">
+          <div class="card-icon security">
+            <mat-icon>security</mat-icon>
+          </div>
+          <div class="card-info">
+            <h3>Privacy & Security</h3>
+            <p>Manage your privacy settings</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Two-Factor Authentication</span>
+              <span class="setting-desc">Add an extra layer of security</span>
+            </div>
+            <mat-slide-toggle [(ngModel)]="twoFactorAuth" color="primary"></mat-slide-toggle>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Activity Status</span>
+              <span class="setting-desc">Let others see when you're online</span>
+            </div>
+            <mat-slide-toggle [(ngModel)]="activityStatus" color="primary"></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="settings-card danger">
+        <div class="card-header">
+          <div class="card-icon danger">
+            <mat-icon>warning</mat-icon>
+          </div>
+          <div class="card-info">
+            <h3>Danger Zone</h3>
+            <p>Irreversible actions</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="danger-actions">
+            <button class="btn-danger-outline" (click)="exportData()">
+              <mat-icon>download</mat-icon>
+              Export My Data
+            </button>
+            <button class="btn-danger" (click)="deleteAccount()">
+              <mat-icon>delete_forever</mat-icon>
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="settings-footer">
+      <button class="btn-save" (click)="saveSettings()">
+        <mat-icon>check</mat-icon>
+        Save Settings
+      </button>
+    </div>
+  </div>
+</div>

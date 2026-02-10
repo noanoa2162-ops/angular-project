@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models';
 
+// key for saving token in localStorage
 const TOKEN_KEY = 'auth_token';
+
+// teacher's API server
 const API_URL = 'https://tasks-teacher-server.onrender.com/api';
 
 @Injectable({
