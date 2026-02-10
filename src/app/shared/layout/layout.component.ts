@@ -20,7 +20,7 @@ interface Notification {
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, MatMenuModule, MatDividerModule, FormsModule],
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
   private authService = inject(AuthService);
