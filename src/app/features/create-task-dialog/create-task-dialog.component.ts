@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-import { TaskPriority } from '../../../core/models';
+import { TaskPriority } from '../../core/models';
 
 @Component({
   selector: 'app-create-task-dialog',

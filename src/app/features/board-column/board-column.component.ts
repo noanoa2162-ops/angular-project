@@ -1,8 +1,8 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Task, TaskStatus } from '../../../core/models';
-import { TaskCardComponent } from './task-card.component';
+import { Task, TaskStatus } from '../../core/models';
+import { TaskCardComponent } from '../task-card/task-card.component';
 
 @Component({
   selector: 'app-board-column',

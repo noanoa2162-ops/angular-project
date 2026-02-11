@@ -11,8 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Task, TaskStatus, TaskPriority } from '../../../core/models';
-import { TasksService, CommentsService, AuthService } from '../../../core/services';
+import { Task, TaskStatus, TaskPriority } from '../../core/models';
+import { TasksService, CommentsService, AuthService } from '../../core/services';
 
 @Component({
   selector: 'app-task-side-panel',

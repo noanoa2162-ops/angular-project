@@ -9,8 +9,8 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TeamsService } from '../../core/services';
 import { Team } from '../../core/models';
-import { CreateTeamDialogComponent } from './dialogs/create-team-dialog.component';
-import { AddMemberDialogComponent } from './dialogs/add-member-dialog.component';
+import { CreateTeamDialogComponent } from '../create-team-dialog/create-team-dialog.component';
+import { AddMemberDialogComponent } from '../add-member-dialog/add-member-dialog.component';
 
 @Component({
   selector: 'app-teams',

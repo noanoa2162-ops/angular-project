@@ -6,8 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { Task, TaskStatus } from '../../../core/models';
-import { TasksService, AuthService } from '../../../core/services';
+import { Task, TaskStatus } from '../../core/models';
+import { TasksService, AuthService } from '../../core/services';
 
 @Component({
   selector: 'app-task-card',

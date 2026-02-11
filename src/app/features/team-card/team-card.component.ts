@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Team } from '../../../core/models';
+import { Team } from '../../core/models';
 
 @Component({
   selector: 'app-team-card',

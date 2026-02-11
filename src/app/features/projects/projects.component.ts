@@ -7,7 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ProjectsService, TeamsService } from '../../core/services';
 import { Project } from '../../core/models';
-import { CreateProjectDialogComponent } from './dialogs/create-project-dialog.component';
+import { CreateProjectDialogComponent } from '../create-project-dialog/create-project-dialog.component';
 
 @Component({
   selector: 'app-projects',

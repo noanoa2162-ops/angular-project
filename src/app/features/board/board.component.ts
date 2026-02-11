@@ -12,9 +12,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CdkDragDrop, DragDropModule, transferArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TasksService, ProjectsService, AuthService } from '../../core/services';
 import { Task, TaskStatus, TaskPriority } from '../../core/models';
-import { TaskCardComponent } from './components/task-card.component';
-import { TaskSidePanelComponent } from './components/task-side-panel.component';
-import { CreateTaskDialogComponent } from './dialogs/create-task-dialog.component';
+import { TaskCardComponent } from '../task-card/task-card.component';
+import { TaskSidePanelComponent } from '../task-side-panel/task-side-panel.component';
+import { CreateTaskDialogComponent } from '../create-task-dialog/create-task-dialog.component';
 
 @Component({
   selector: 'app-board',

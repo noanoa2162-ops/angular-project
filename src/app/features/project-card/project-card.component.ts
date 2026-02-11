@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Project } from '../../../core/models';
+import { Project } from '../../core/models';
 
 @Component({
   selector: 'app-project-card',
