@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards';
+import { authGuard } from './guards';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent)
+    loadComponent: () => import('./components/landing/landing.component').then(m => m.LandingComponent)
   },
   {
     path: 'auth',
-    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
+    loadChildren: () => import('./components/auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
   {
     path: '',
@@ -17,32 +17,32 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES)
+        loadChildren: () => import('./components/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES)
       },
       {
         path: 'teams',
-        loadChildren: () => import('./features/teams/teams.routes').then(m => m.TEAMS_ROUTES)
+        loadChildren: () => import('./components/teams/teams.routes').then(m => m.TEAMS_ROUTES)
       },
       {
         path: 'teams/:teamId/projects',
-        loadChildren: () => import('./features/projects/projects.routes').then(m => m.PROJECTS_ROUTES)
+        loadChildren: () => import('./components/projects/projects.routes').then(m => m.PROJECTS_ROUTES)
       },
       {
         path: 'projects/:projectId/board',
-        loadChildren: () => import('./features/board/board.routes').then(m => m.BOARD_ROUTES)
+        loadChildren: () => import('./components/board/board.routes').then(m => m.BOARD_ROUTES)
       },
       {
         path: 'profile',
-        loadChildren: () => import('./features/profile/profile.routes').then(m => m.PROFILE_ROUTES)
+        loadChildren: () => import('./components/profile/profile.routes').then(m => m.PROFILE_ROUTES)
       },
       {
         path: 'settings',
-        loadChildren: () => import('./features/settings/settings.routes').then(m => m.SETTINGS_ROUTES)
+        loadChildren: () => import('./components/settings/settings.routes').then(m => m.SETTINGS_ROUTES)
       }
     ]
   },
   {
     path: '**',
-    loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
+    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
 ];
