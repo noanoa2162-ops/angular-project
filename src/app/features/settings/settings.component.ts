@@ -1,15 +1,13 @@
-﻿import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AuthService } from '../../core/services';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatSlideToggleModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
@@ -30,12 +28,49 @@ export class SettingsComponent {
   twoFactorAuth = false;
   activityStatus = true;
 
+  isSaving = signal(false);
+  saveSuccess = signal(false);
+
   saveSettings(): void {
-    alert('Settings saved successfully!');
+    this.isSaving.set(true);
+    
+    setTimeout(() => {
+      this.isSaving.set(false);
+      this.saveSuccess.set(true);
+      setTimeout(() => this.saveSuccess.set(false), 3000);
+    }, 800);
   }
 
   exportData(): void {
-    alert('Your data export will be ready soon!');
+    // Create a simple data export
+    const user = this.authService.currentUser();
+    const data = {
+      user: user,
+      settings: {
+        notifications: {
+          email: this.emailNotifications,
+          push: this.pushNotifications,
+          reminders: this.taskReminders
+        },
+        appearance: {
+          theme: this.theme,
+          compactMode: this.compactMode
+        },
+        security: {
+          twoFactorAuth: this.twoFactorAuth,
+          activityStatus: this.activityStatus
+        }
+      },
+      exportedAt: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'lumina-data-export.json';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   deleteAccount(): void {

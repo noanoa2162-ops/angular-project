@@ -1,15 +1,13 @@
-﻿import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../core/services';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -24,6 +22,10 @@ export class ProfileComponent {
   bio = '';
   currentPassword = '';
   newPassword = '';
+  
+  isSaving = signal(false);
+  saveSuccess = signal(false);
+  saveError = signal('');
 
   constructor() {
     const user = this.authService.currentUser();
@@ -46,7 +48,16 @@ export class ProfileComponent {
   }
 
   saveProfile(): void {
-    alert('Profile saved successfully!');
+    this.isSaving.set(true);
+    this.saveError.set('');
+    this.saveSuccess.set(false);
+    
+    // Simulate save
+    setTimeout(() => {
+      this.isSaving.set(false);
+      this.saveSuccess.set(true);
+      setTimeout(() => this.saveSuccess.set(false), 3000);
+    }, 800);
   }
 
   goBack(): void {
