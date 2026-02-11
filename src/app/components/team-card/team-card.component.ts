@@ -17,7 +17,7 @@ import { Team } from '../../models';
     MatTooltipModule
   ],
   templateUrl: './team-card.component.html',
-  styleUrl: './team-card.component.scss'
+  styleUrls: ['./team-card.component.scss']
 })
 export class TeamCardComponent {
   team = input.required<Team>();

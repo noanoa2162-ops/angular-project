@@ -9,7 +9,7 @@ import { AuthService } from '../../services';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss'
+  styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
   private authService = inject(AuthService);

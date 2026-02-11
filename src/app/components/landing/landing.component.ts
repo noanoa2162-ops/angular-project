@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   selector: 'app-landing',
   standalone: true,
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.scss'
+  styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
   constructor(private router: Router) {}

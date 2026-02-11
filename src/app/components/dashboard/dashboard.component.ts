@@ -18,7 +18,7 @@ import { Task, Team, Project } from '../../models';
     MatTooltipModule
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);

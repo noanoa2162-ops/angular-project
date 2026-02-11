@@ -13,7 +13,7 @@ import { TaskCardComponent } from '../task-card/task-card.component';
     TaskCardComponent
   ],
   templateUrl: './board-column.component.html',
-  styleUrl: './board-column.component.scss'
+  styleUrls: ['./board-column.component.scss']
 })
 export class BoardColumnComponent {
   // Signal Inputs

@@ -12,7 +12,7 @@ import { AuthService } from '../../services';
     ReactiveFormsModule
   ],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss'
+  styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
   protected authService = inject(AuthService);

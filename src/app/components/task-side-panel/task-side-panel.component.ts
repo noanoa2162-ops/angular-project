@@ -31,7 +31,7 @@ import { TasksService, CommentsService, AuthService } from '../../services';
     MatTabsModule
   ],
   templateUrl: './task-side-panel.component.html',
-  styleUrl: './task-side-panel.component.scss',
+  styleUrls: ['./task-side-panel.component.scss'],
   animations: [
     trigger('slideDown', [
       transition(':enter', [

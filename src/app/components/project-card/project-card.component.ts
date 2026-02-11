@@ -17,7 +17,7 @@ import { Project } from '../../models';
     MatTooltipModule
   ],
   templateUrl: './project-card.component.html',
-  styleUrl: './project-card.component.scss'
+  styleUrls: ['./project-card.component.scss']
 })
 export class ProjectCardComponent {
   // Signal Input - Angular 17+ modern syntax

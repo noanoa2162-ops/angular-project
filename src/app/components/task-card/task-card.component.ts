@@ -22,7 +22,7 @@ import { TasksService, AuthService } from '../../services';
     MatChipsModule
   ],
   templateUrl: './task-card.component.html',
-  styleUrl: './task-card.component.scss'
+  styleUrls: ['./task-card.component.scss']
 })
 export class TaskCardComponent {
   private tasksService = inject(TasksService);

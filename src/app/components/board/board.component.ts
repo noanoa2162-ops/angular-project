@@ -35,7 +35,7 @@ import { CreateTaskDialogComponent } from '../create-task-dialog/create-task-dia
     TaskSidePanelComponent
   ],
   templateUrl: './board.component.html',
-  styleUrl: './board.component.scss'
+  styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit, OnDestroy {
   protected tasksService = inject(TasksService);

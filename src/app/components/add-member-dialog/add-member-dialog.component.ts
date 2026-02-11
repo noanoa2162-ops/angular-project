@@ -23,7 +23,7 @@ import { TeamsService } from '../../services';
     MatProgressSpinnerModule
   ],
   templateUrl: './add-member-dialog.component.html',
-  styleUrl: './add-member-dialog.component.scss'
+  styleUrls: ['./add-member-dialog.component.scss']
 })
 export class AddMemberDialogComponent {
   private dialogRef = inject(MatDialogRef<AddMemberDialogComponent>);

@@ -20,7 +20,7 @@ import { CreateProjectDialogComponent } from '../create-project-dialog/create-pr
     MatDialogModule
   ],
   templateUrl: './projects.component.html',
-  styleUrl: './projects.component.scss'
+  styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
   protected projectsService = inject(ProjectsService);

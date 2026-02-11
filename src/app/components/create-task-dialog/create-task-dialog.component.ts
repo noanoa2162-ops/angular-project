@@ -27,7 +27,7 @@ import { TaskPriority } from '../../models';
     MatIconModule
   ],
   templateUrl: './create-task-dialog.component.html',
-  styleUrl: './create-task-dialog.component.scss'
+  styleUrls: ['./create-task-dialog.component.scss']
 })
 export class CreateTaskDialogComponent {
   private dialogRef = inject(MatDialogRef<CreateTaskDialogComponent>);

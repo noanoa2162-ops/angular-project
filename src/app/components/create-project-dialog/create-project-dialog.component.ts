@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ],
   templateUrl: './create-project-dialog.component.html',
-  styleUrl: './create-project-dialog.component.scss'
+  styleUrls: ['./create-project-dialog.component.scss']
 })
 export class CreateProjectDialogComponent {
   private dialogRef = inject(MatDialogRef<CreateProjectDialogComponent>);

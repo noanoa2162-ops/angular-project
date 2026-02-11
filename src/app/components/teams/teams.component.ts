@@ -25,7 +25,7 @@ import { AddMemberDialogComponent } from '../add-member-dialog/add-member-dialog
     MatTooltipModule
   ],
   templateUrl: './teams.component.html',
-  styleUrl: './teams.component.scss'
+  styleUrls: ['./teams.component.scss']
 })
 export class TeamsComponent implements OnInit {
   protected teamsService = inject(TeamsService);
