@@ -4,6 +4,7 @@ import { authGuard } from './guards';
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     loadComponent: () => import('./components/landing/landing.component').then(m => m.LandingComponent)
   },
   {
