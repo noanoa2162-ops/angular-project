@@ -2,15 +2,14 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Project, CreateProjectRequest } from '../models';
-
-const API_URL = 'https://tasks-teacher-server.onrender.com/api';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
   private http = inject(HttpClient);
-  private apiUrl = `${API_URL}/projects`;
+  private apiUrl = `${environment.apiUrl}/projects`;
 
   private _projects = signal<Project[]>([]);
   private _selectedTeamId = signal<string | null>(null);

@@ -1,154 +1,64 @@
-# LUMINA ✨
+# LUMINA — Team & Task Management
 
-A modern task management and team collaboration platform built with Angular 21.
+An Angular 21 frontend for organizing teams, projects, and tasks through a responsive Kanban workflow.
 
-![LUMINA](https://img.shields.io/badge/LUMINA-Task%20Management-667eea?style=for-the-badge)
-![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)
+[![CI](https://github.com/noanoa2162-ops/angular-project/actions/workflows/ci.yml/badge.svg)](https://github.com/noanoa2162-ops/angular-project/actions/workflows/ci.yml)
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)
 
-## 🌟 Features
+## Highlights
 
-- **Team Management** - Create and manage teams with role-based access
-- **Project Organization** - Organize work into projects with customizable workflows
-- **Kanban Boards** - Visual task management with drag-and-drop functionality
-- **Task Tracking** - Create, assign, and track tasks with priorities and due dates
-- **User Authentication** - Secure login and registration system
-- **Responsive Design** - Works seamlessly on desktop and mobile devices
+- Team and project workspaces with role-aware navigation
+- Kanban board with task status, priority, assignee, and due-date flows
+- Authentication guards and JWT request interceptors
+- Angular Signals for application state
+- Lazy-loaded standalone components
+- Responsive Angular Material interface
 
-## 🚀 Live Demo
+## Architecture
 
-- **Frontend**: Deployed on Render
-- **Backend API**: [tasks-teacher-server.onrender.com](https://tasks-teacher-server.onrender.com)
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **Framework**: Angular 21 (Standalone Components)
-- **UI Components**: Angular Material, Angular CDK
-- **Styling**: SCSS with custom design system
-- **State Management**: Angular Signals
-- **HTTP Client**: Angular HttpClient with interceptors
-
-### Backend
-- **Server**: Node.js with Express
-- **Database**: PostgreSQL
-- **Authentication**: JWT (JSON Web Tokens)
-- **API**: RESTful API
-
-## 📦 Installation
-
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Angular CLI (`npm install -g @angular/cli`)
-
-### Setup
-
-1. Clone the repository:
-```bash
-git clone https://github.com/your-username/angular_project.git
-cd angular_project
+```text
+src/app/
+├── components/     Feature and page components
+├── guards/         Route authorization
+├── interceptors/   Authentication and API error handling
+├── models/         Typed API contracts
+├── services/       Authentication, teams, projects, and tasks
+└── shared/         Reusable layout components
 ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+The frontend reads its API base URL from `src/environments/`. The public educational REST API used by the project is hosted separately at [tasks-teacher-server.onrender.com](https://tasks-teacher-server.onrender.com); its Node.js/PostgreSQL source is not part of this repository.
 
-3. Start the development server:
-```bash
-ng serve
-```
+## Tech Stack
 
-4. Open your browser and navigate to `http://localhost:4200`
+- Angular 21 and TypeScript 5.9
+- Angular Material and CDK
+- Angular Signals and RxJS
+- SCSS
+- Vitest through the Angular test runner
 
-## 🏗️ Project Structure
+## Run Locally
 
-```
-src/
-├── app/
-│   ├── core/              # Core modules (guards, interceptors, services, models)
-│   │   ├── guards/        # Route guards (auth)
-│   │   ├── interceptors/  # HTTP interceptors (auth, error handling)
-│   │   ├── models/        # TypeScript interfaces
-│   │   └── services/      # API services
-│   ├── features/          # Feature modules
-│   │   ├── auth/          # Login/Register
-│   │   ├── board/         # Kanban board
-│   │   ├── dashboard/     # User dashboard
-│   │   ├── landing/       # Landing page
-│   │   ├── projects/      # Project management
-│   │   ├── teams/         # Team management
-│   │   ├── profile/       # User profile
-│   │   └── settings/      # App settings
-│   └── shared/            # Shared components (navbar, sidebar, layout)
-├── environments/          # Environment configurations
-└── styles.scss           # Global styles
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-The app uses environment files in `src/environments/`:
-
-- `environment.development.ts` - Development settings
-- `environment.ts` - Production settings
-
-### Proxy Configuration (Development)
-
-The `proxy.conf.json` file routes API calls to the backend server during development.
-
-## 📝 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | User login |
-| GET | `/api/teams` | Get user's teams |
-| POST | `/api/teams` | Create new team |
-| GET | `/api/projects` | Get projects |
-| POST | `/api/projects` | Create project |
-| GET | `/api/tasks` | Get tasks |
-| POST | `/api/tasks` | Create task |
-| PATCH | `/api/tasks/:id` | Update task |
-| DELETE | `/api/tasks/:id` | Delete task |
-
-## 🧪 Testing
+Prerequisites: Node.js 22+ and npm.
 
 ```bash
-# Run unit tests
-ng test
-
-# Run tests with coverage
-ng test --coverage
+git clone https://github.com/noanoa2162-ops/angular-project.git
+cd angular-project
+npm ci
+npm start
 ```
 
-## 🏭 Building for Production
+Open `http://localhost:4200`.
+
+## Quality Checks
 
 ```bash
-# Build the project
-ng build
-
-# Build with production configuration
-ng build --configuration=production
+npm run test:ci
+npm run build
 ```
 
-Build artifacts will be stored in the `dist/` directory.
+GitHub Actions runs both commands for every push and pull request.
 
-## 🚀 Deployment
+## Project Timeline
 
-### Render Deployment
-
-1. Connect your GitHub repository to Render
-2. Set build command: `npm run build`
-3. Set publish directory: `dist/angular-project/browser`
-4. Add environment variables if needed
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-Made with ❤️ using Angular
+Originally developed in February 2026. Tests, CI, dependency configuration, and documentation were hardened for portfolio presentation in August 2026.

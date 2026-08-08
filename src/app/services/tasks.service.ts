@@ -2,16 +2,14 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Task, CreateTaskRequest, UpdateTaskRequest } from '../models';
-
-// server URL
-const API_URL = 'https://tasks-teacher-server.onrender.com/api';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
   private http = inject(HttpClient);
-  private apiUrl = `${API_URL}/tasks`;
+  private apiUrl = `${environment.apiUrl}/tasks`;
 
   private _tasks = signal<Task[]>([]);
   private _selectedTask = signal<Task | null>(null);

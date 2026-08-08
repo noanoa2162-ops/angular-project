@@ -3,12 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models';
+import { environment } from '../../environments/environment';
 
 // key for saving token in localStorage
 const TOKEN_KEY = 'auth_token';
-
-// teacher's API server
-const API_URL = 'https://tasks-teacher-server.onrender.com/api';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +14,7 @@ const API_URL = 'https://tasks-teacher-server.onrender.com/api';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = `${API_URL}/auth`;
+  private apiUrl = `${environment.apiUrl}/auth`;
   
   private _currentUser = signal<User | null>(null);
   private _isLoading = signal(false);

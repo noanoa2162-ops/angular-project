@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Teams Component - Premium Design
 $bg-main: #f8fafc;
 $bg-white: #ffffff;
@@ -323,8 +325,8 @@ $shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
     }
 
     &:hover {
-      background: darken($bg-hover, 5%);
-      border-color: darken($border, 10%);
+      background: color.adjust($bg-hover, $lightness: -5%);
+      border-color: color.adjust($border, $lightness: -10%);
     }
   }
 }
