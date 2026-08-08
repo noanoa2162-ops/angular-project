@@ -1,0 +1,72 @@
+// Project Card - ClickUp Light Style
+$bg-white: #ffffff;
+$bg-hover: #f0f1f3;
+$primary: #7b68ee;
+$text-primary: #1a1a2e;
+$text-secondary: #6b7280;
+$text-muted: #9ca3af;
+$border: #e5e7eb;
+
+.project-card {
+  background: $bg-white;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  
+  .project-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+  }
+  
+  .project-info {
+    flex: 1;
+    min-width: 0;
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: $text-primary;
+      margin: 0 0 4px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .team-name {
+      font-size: 13px;
+      color: $text-secondary;
+    }
+  }
+}
+
+.project-description {
+  font-size: 14px;
+  color: $text-secondary;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -1,0 +1,51 @@
+<div class="task-card" [class.high]="task().priority === 'high'" [class.medium]="task().priority === 'medium'" [class.low]="task().priority === 'low'">
+  <div class="card-header">
+    <span class="priority-badge" [class]="task().priority">
+      @switch (task().priority) {
+        @case ('high') { 🔴 High }
+        @case ('medium') { 🟡 Medium }
+        @case ('low') { 🟢 Low }
+      }
+    </span>
+    <button class="card-menu">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="5" r="1" fill="currentColor"/>
+        <circle cx="12" cy="12" r="1" fill="currentColor"/>
+        <circle cx="12" cy="19" r="1" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+  
+  <h4 class="task-title">{{ task().title }}</h4>
+  
+  @if (task().description) {
+    <p class="task-description">{{ task().description }}</p>
+  }
+  
+  <div class="card-footer">
+    <div class="task-meta">
+      @if (task().due_date) {
+        <span class="meta-item" [class.overdue]="isOverdue()" [class.due-soon]="isDueSoon()">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ formattedDate() }}
+        </span>
+      }
+    </div>
+    @if (task().assignee_name) {
+      <div class="assignee-avatar has-assignee" [title]="task().assignee_name">
+        <span class="avatar-initials">{{ getInitials() }}</span>
+      </div>
+    } @else {
+      <div class="assignee-avatar unassigned" title="Unassigned">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 21a8 8 0 1 0-16 0" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+    }
+  </div>
+</div>
+

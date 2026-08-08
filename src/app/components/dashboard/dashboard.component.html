@@ -1,0 +1,219 @@
+<div class="dashboard">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="greeting">
+      <h1>Welcome back, {{ userName() }}! 👋</h1>
+      <p>Here's what's happening with your tasks today</p>
+    </div>
+    <div class="header-actions">
+      <div class="date-badge">
+        <mat-icon>calendar_today</mat-icon>
+        <span>{{ currentDate }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Stats Grid -->
+  <section class="stats-grid">
+    <div class="stat-card purple">
+      <div class="stat-icon">
+        <mat-icon>assignment</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">{{ totalTasks() }}</span>
+        <span class="stat-label">Total Tasks</span>
+      </div>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>12%</span>
+      </div>
+    </div>
+
+    <div class="stat-card blue">
+      <div class="stat-icon">
+        <mat-icon>pending_actions</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">{{ pendingTasks() }}</span>
+        <span class="stat-label">Pending</span>
+      </div>
+      <div class="stat-trend down">
+        <mat-icon>trending_down</mat-icon>
+        <span>5%</span>
+      </div>
+    </div>
+
+    <div class="stat-card green">
+      <div class="stat-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">{{ completedTasks() }}</span>
+        <span class="stat-label">Completed</span>
+      </div>
+      <div class="stat-trend up">
+        <mat-icon>trending_up</mat-icon>
+        <span>23%</span>
+      </div>
+    </div>
+
+    <div class="stat-card orange">
+      <div class="stat-icon">
+        <mat-icon>groups</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">{{ teamsCount() }}</span>
+        <span class="stat-label">Teams</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="dashboard-content">
+    <!-- Recent Tasks -->
+    <section class="content-card tasks-section">
+      <div class="card-header">
+        <h2>
+          <mat-icon>task_alt</mat-icon>
+          Recent Tasks
+        </h2>
+        <button class="view-all-btn" routerLink="/teams">View All</button>
+      </div>
+      <div class="tasks-list">
+        @if (recentTasks().length === 0) {
+          <div class="empty-state">
+            <mat-icon>inbox</mat-icon>
+            <p>No tasks yet</p>
+            <span>Create a task from your project board</span>
+          </div>
+        } @else {
+          @for (task of recentTasks(); track task.id) {
+            <div class="task-item" [class]="'priority-' + task.priority">
+              <div class="task-status" [class]="task.status">
+                @if (task.status === 'done') {
+                  <mat-icon>check_circle</mat-icon>
+                } @else if (task.status === 'in_progress') {
+                  <mat-icon>schedule</mat-icon>
+                } @else {
+                  <mat-icon>radio_button_unchecked</mat-icon>
+                }
+              </div>
+              <div class="task-info">
+                <span class="task-title">{{ task.title }}</span>
+                @if (task.description) {
+                  <span class="task-desc">{{ task.description }}</span>
+                }
+              </div>
+              <div class="task-meta">
+                <span class="priority-badge" [class]="task.priority">{{ task.priority }}</span>
+                @if (task.due_date) {
+                  <span class="due-date">
+                    <mat-icon>event</mat-icon>
+                    {{ formatDate(task.due_date) }}
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </section>
+
+    <!-- Activity & Teams -->
+    <div class="side-content">
+      <!-- Quick Actions -->
+      <section class="content-card quick-actions">
+        <h2>
+          <mat-icon>flash_on</mat-icon>
+          Quick Actions
+        </h2>
+        <div class="actions-grid">
+          <button class="action-item" routerLink="/teams">
+            <div class="action-icon purple">
+              <mat-icon>group_add</mat-icon>
+            </div>
+            <span>New Team</span>
+          </button>
+          <button class="action-item" routerLink="/teams">
+            <div class="action-icon blue">
+              <mat-icon>create_new_folder</mat-icon>
+            </div>
+            <span>New Project</span>
+          </button>
+          <button class="action-item" routerLink="/teams">
+            <div class="action-icon green">
+              <mat-icon>add_task</mat-icon>
+            </div>
+            <span>New Task</span>
+          </button>
+          <button class="action-item" routerLink="/teams">
+            <div class="action-icon orange">
+              <mat-icon>person_add</mat-icon>
+            </div>
+            <span>Invite</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- My Teams -->
+      <section class="content-card teams-preview">
+        <div class="card-header">
+          <h2>
+            <mat-icon>groups</mat-icon>
+            My Teams
+          </h2>
+          <button class="view-all-btn" routerLink="/teams">View All</button>
+        </div>
+        <div class="teams-list">
+          @if (teams().length === 0) {
+            <div class="empty-state small">
+              <mat-icon>group_off</mat-icon>
+              <p>No teams yet</p>
+            </div>
+          } @else {
+            @for (team of teams().slice(0, 4); track team.id) {
+              <div class="team-item" [routerLink]="['/teams', team.id, 'projects']">
+                <div class="team-avatar" [style.background]="getTeamColor(team.id)">
+                  {{ team.name.charAt(0).toUpperCase() }}
+                </div>
+                <div class="team-info">
+                  <span class="team-name">{{ team.name }}</span>
+                  <span class="team-members">{{ team.members_count }} members</span>
+                </div>
+                <mat-icon class="arrow-icon">chevron_right</mat-icon>
+              </div>
+            }
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Progress Overview -->
+  <section class="content-card progress-section">
+    <h2>
+      <mat-icon>analytics</mat-icon>
+      Weekly Progress
+    </h2>
+    <div class="progress-chart">
+      <div class="chart-bars">
+        @for (day of weekDays; track day.name) {
+          <div class="bar-wrapper">
+            <div class="bar" [style.height.%]="day.value" [class]="day.color"></div>
+            <span class="day-label">{{ day.name }}</span>
+          </div>
+        }
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item">
+          <span class="dot purple"></span>
+          <span>Completed</span>
+        </div>
+        <div class="legend-item">
+          <span class="dot blue"></span>
+          <span>In Progress</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
