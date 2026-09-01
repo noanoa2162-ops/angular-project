@@ -1,0 +1,1 @@
+import{a as o}from"./chunk-XIVHA25E.js";import"./chunk-G45YCB4H.js";import"./chunk-DLVKG3CH.js";import"./chunk-X6L7STWD.js";import"./chunk-7CGTOI24.js";var r=[{path:"",canActivate:[o],loadComponent:()=>import("./chunk-VP4ILHO3.js").then(t=>t.ProjectsComponent)}];export{r as PROJECTS_ROUTES};

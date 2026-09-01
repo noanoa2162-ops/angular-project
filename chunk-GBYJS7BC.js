@@ -1,0 +1,1 @@
+import{a as o}from"./chunk-XIVHA25E.js";import"./chunk-G45YCB4H.js";import"./chunk-DLVKG3CH.js";import"./chunk-X6L7STWD.js";import"./chunk-7CGTOI24.js";var m=[{path:"",canActivate:[o],loadComponent:()=>import("./chunk-F667PAGC.js").then(t=>t.TeamsComponent)}];export{m as TEAMS_ROUTES};

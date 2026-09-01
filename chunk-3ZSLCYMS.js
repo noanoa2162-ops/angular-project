@@ -1,0 +1,1 @@
+import{b as o}from"./chunk-XIVHA25E.js";import"./chunk-G45YCB4H.js";import"./chunk-DLVKG3CH.js";import"./chunk-X6L7STWD.js";import"./chunk-7CGTOI24.js";var e=[{path:"",canActivate:[o],loadComponent:()=>import("./chunk-OBIZYEDO.js").then(t=>t.AuthComponent)}];export{e as AUTH_ROUTES};

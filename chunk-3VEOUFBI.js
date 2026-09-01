@@ -1,0 +1,1 @@
+import{a as o}from"./chunk-XIVHA25E.js";import"./chunk-G45YCB4H.js";import"./chunk-DLVKG3CH.js";import"./chunk-X6L7STWD.js";import"./chunk-7CGTOI24.js";var a=[{path:"",canActivate:[o],loadComponent:()=>import("./chunk-VREWVA2V.js").then(t=>t.BoardComponent)}];export{a as BOARD_ROUTES};
